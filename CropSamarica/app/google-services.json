@@ -1,0 +1,47 @@
+{
+  "project_info": {
+    "project_number": "645209843621",
+    "project_id": "crop-samarica",
+    "storage_bucket": "crop-samarica.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:645209843621:android:a495119457c3c5b7246a4c",
+        "android_client_info": {
+          "package_name": "com.jmballangca.cropsamarica"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "645209843621-kf2odn1d0rgmd9us80of7mb93cse9beg.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.jmballangca.cropsamarica",
+            "certificate_hash": "1533e95330bc6607081fc56f7992b5366cd3b453"
+          }
+        },
+        {
+          "client_id": "645209843621-7rgme5qpm9eevt208rr51h60umtbr8r6.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBoMCrILo6C8wCGANHa1ugjURcytPcQvUs"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "645209843621-7rgme5qpm9eevt208rr51h60umtbr8r6.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

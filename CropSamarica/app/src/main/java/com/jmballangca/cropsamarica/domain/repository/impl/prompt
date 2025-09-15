@@ -1,0 +1,64 @@
+  val CREATE_RICE_FIELD_DECLARATION = FunctionDeclaration(
+            name = CREATE_CROP_FIELD,
+            description = "Generates a structured rice field object including crop details, soil, irrigation, status, and stage-based recommendations. Useful for AI-assisted crop management and precision farming.",
+            parameters = mapOf(
+                "name" to Schema.string("Name of the rice field. Required."),
+                "location" to Schema.string("Location of the rice field (e.g., province, municipality). Required."),
+                "soil" to Schema.enumeration(
+                    listOf(
+                        "CLAY",
+                        "CLAY_LOAM",
+                        "SILTY_CLAY",
+                        "SILTY_CLAY_LOAM",
+                        "SANDY_CLAY",
+                        "SANDY_CLAY_LOAM"
+                    ),
+                    description = "Soil type of the field. Determines water retention and nutrient recommendations. Required."
+                ),
+                "area" to Schema.integer("Size of the field in hectares. Required."),
+                "planted_date" to Schema.string(
+                    description = "Planting date  in strict YYYY-MM-DD format. Example: 2025-02-15"
+                ),
+                "variety" to Schema.string("Rice variety planted. Required."),
+                "irrigation" to Schema.enumeration(
+                    listOf("RAINFED", "IRRIGATED", "PARTIAL_IRRIGATION", "NONE"),
+                    description = "Irrigation type applied to the field. Required."
+                ),
+                "lastFertilizer" to Schema.string(
+                    description = "Most recent fertilizer applied. Optional, can be inferred if unknown.",
+                    nullable = true
+                ),
+                "stage" to Schema.enumeration(
+                    RiceStage.entries.map { it.name },
+                    description = "Current crop stage. Auto-generated if not provided.",
+                    nullable = true
+                ),
+                "status" to Schema.enumeration(
+                    RiceStatus.entries.map { it.name },
+                    description = "Current health status of the crop. Auto-generated if not provided.",
+                    nullable = true
+                ),
+                "expected_harvest_date" to Schema.string(
+                    description = "Predicted harvest date in strict YYYY-MM-DD format. Example: 2025-05-30"
+                ),
+                "recommendations" to Schema.array(
+                    Schema.obj(
+                        mapOf(
+                            "stage" to Schema.enumeration(
+                                RiceStage.entries.map { it.name },
+                                "Stage for which this recommendation applies."
+                            ),
+                            "title" to Schema.string("Title of the recommendation."),
+                            "details" to Schema.string("Description of the recommendation."),
+                        )
+                    ),
+                    description = "List of stage-specific recommendations. AI-generated based on crop conditions and weather.",
+                    nullable = true
+                )
+            ),
+            optionalParameters = listOf(
+                "lastFertilizer",
+                "status",
+                "recommendations"
+            )
+        )
