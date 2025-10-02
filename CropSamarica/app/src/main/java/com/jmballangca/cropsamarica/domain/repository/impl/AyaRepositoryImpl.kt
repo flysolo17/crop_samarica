@@ -11,12 +11,17 @@ import com.google.firebase.ai.type.Schema
 import com.google.firebase.ai.type.content
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
+import com.jmballangca.cropsamarica.core.utils.CREATE_REMINDER
+import com.jmballangca.cropsamarica.core.utils.REMINDER
+import com.jmballangca.cropsamarica.core.utils.Reminder
+import com.jmballangca.cropsamarica.core.utils.asReminder
 import com.jmballangca.cropsamarica.data.models.rice_field.RiceField
 import com.jmballangca.cropsamarica.data.models.rice_field.RiceStage
 import com.jmballangca.cropsamarica.data.models.rice_field.RiceStatus
 import com.jmballangca.cropsamarica.data.models.rice_field.asRecommendation
 import com.jmballangca.cropsamarica.data.models.rice_field.asRiceField
 import com.jmballangca.cropsamarica.data.models.rice_field.getRiceStage
+import com.jmballangca.cropsamarica.data.models.weather.SevenDayWeatherResponse
 import com.jmballangca.cropsamarica.data.service.WeatherApiService
 import com.jmballangca.cropsamarica.data.models.weather.Weather
 import com.jmballangca.cropsamarica.domain.models.DailyForecast
@@ -30,6 +35,7 @@ import com.jmballangca.cropsamarica.domain.models.toDailyForecastUI
 
 
 import com.jmballangca.cropsamarica.domain.repository.AyaRepository
+import com.jmballangca.cropsamarica.domain.repository.SevenDayWeatherForecast
 
 import com.jmballangca.cropsamarica.domain.utils.toBitmap
 import com.jmballangca.cropsamarica.presentation.create_crop_field.CreateCropFieldForm
@@ -43,15 +49,17 @@ import java.util.Date
 
 import javax.inject.Inject
 
+
 class AyaRepositoryImpl @Inject constructor(
     private val context : Context,
     private val ai: GenerativeModel,
     private val auth: FirebaseAuth,
     private val weatherApiService: WeatherApiService,
-    private val firestore : FirebaseFirestore
+    private val firestore : FirebaseFirestore,
 ): AyaRepository {
     private val riceFieldRef = firestore.collection("rice_fields")
     private val weatherRef = firestore.collection("weather")
+    private val reminderRef = firestore.collection("reminders")
     private fun saveData(
         uid: String,
         args: Map<String, JsonElement>,
@@ -352,6 +360,66 @@ class AyaRepositoryImpl @Inject constructor(
         }
     }
 
+    override suspend fun generateWeatherForecast(id: String): Result<SevenDayWeatherForecast> {
+        return  try {
+            val riceField = riceFieldRef.document(id).get().await().toObject(RiceField::class.java) ?: return Result.failure(Exception("Rice field not found"))
+            val sevenDayWeatherResponse = weatherApiService.getSevenDayWeatherForecast(
+                location = riceField.location,
+                days = 10
+            )
+            if (!sevenDayWeatherResponse.isSuccessful) {
+                return Result.failure(Exception("Failed to fetch weather data"))
+            }
+            val weather = sevenDayWeatherResponse.body() ?: return Result.failure(Exception("Weather data is null"))
+            Log.d(
+                "weather",
+                "weather: $weather"
+            )
+            Log.d("weather", "forecast days: ${weather.forecast.forecastday.size}")
+
+            Result.success(SevenDayWeatherForecast(riceField = riceField, sevenDayWeatherResponse = weather))
+        } catch (e: Exception) {
+            Result.failure(e)
+        }
+    }
+
+    override suspend fun generateReminder(
+        riceField: RiceField,
+        weather : SevenDayWeatherResponse
+    ) : Result<List<Reminder>> {
+        return try {
+            val prompt = content {
+                text("""
+                    Generate atleast  3 actionable reminders based on ricefield data and weather forecast for the next 
+                    3 days. here's the data:
+                     
+                    RiceField Data: ${riceField},
+                    Weather Forecast: ${weather}
+                """.trimIndent()
+                )
+            }
+            Log.d("AyaRepositoryImpl", "generateReminder: $prompt")
+            val response = ai.generateContent(prompt)
+            val functionCalls = response.functionCalls.find { it.name == REMINDER }
+            Log.d("AyaRepositoryImpl", "generateReminder: ${functionCalls?.args}")
+            if (functionCalls != null) {
+                val recommendations = functionCalls.args["reminders"]
+                    ?.jsonArray
+                    ?.mapNotNull { recElement ->
+                        recElement.jsonObject.asReminder()
+                    } ?: emptyList()
+                Result.success(
+                    recommendations
+                )
+            } else {
+                Result.failure(Exception("No function calls found"))
+            }
+
+        } catch (e: Exception) {
+            Result.failure(e)
+        }
+    }
+
 
     companion object {
         const val QUESTION_GENERATION = "QUESTION_GENERATION"
@@ -410,5 +478,6 @@ class AyaRepositoryImpl @Inject constructor(
                 )
             )
         )
+
     }
 }

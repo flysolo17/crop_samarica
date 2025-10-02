@@ -1,0 +1,127 @@
+.dashboard-container {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+  padding: 24px;
+}
+
+/* Summary Section */
+.summary-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+  gap: 16px;
+
+  .summary-card {
+    text-align: center;
+    padding: 16px;
+    border-radius: 12px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+
+    h3 {
+      font-size: 0.95rem;
+      color: #666;
+      margin-bottom: 8px;
+    }
+
+    p {
+      font-size: 1.4rem;
+      font-weight: 600;
+      color: #1976d2;
+      margin: 0;
+    }
+  }
+}
+
+/* Middle Section */
+.info-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(340px, 1fr));
+  gap: 20px;
+
+  .chart-card {
+    padding: 16px;
+    border-radius: 12px;
+  }
+
+  .list-card {
+    padding: 16px;
+    border-radius: 12px;
+
+    h3 {
+      margin-bottom: 16px;
+      font-size: 1.1rem;
+      font-weight: 600;
+    }
+
+    .crop-item {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 12px 0;
+      border-bottom: 1px solid #eee;
+
+      h4 {
+        margin: 0;
+        font-size: 1rem;
+        font-weight: 500;
+      }
+
+      .location {
+        font-size: 0.85rem;
+        color: #777;
+        margin: 0;
+      }
+
+      .crop-meta {
+        display: flex;
+        gap: 12px;
+
+        .stage {
+          font-size: 0.8rem;
+          color: #1976d2;
+          font-weight: 500;
+        }
+
+        .status {
+          font-size: 0.8rem;
+          font-weight: 600;
+          padding: 2px 8px;
+          border-radius: 12px;
+          text-transform: capitalize;
+
+          &.active {
+            background: #e0f7fa;
+            color: #00796b;
+          }
+
+          &.inactive {
+            background: #fbe9e7;
+            color: #d84315;
+          }
+
+          &.harvest {
+            background: #f1f8e9;
+            color: #33691e;
+          }
+        }
+      }
+    }
+
+    .empty {
+      color: #aaa;
+      font-style: italic;
+    }
+  }
+}
+
+/* Bottom Section */
+.bottom-grid {
+  .chart-card {
+    padding: 16px;
+    border-radius: 12px;
+
+    .chart-container {
+      height: 300px;
+    }
+  }
+}

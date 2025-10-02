@@ -1,0 +1,27 @@
+<mat-toolbar [color]="'primary'">
+  <button mat-icon-button (click)="goBack()" class="example-icon">
+    <mat-icon>arrow_back</mat-icon>
+  </button>
+  <span>{{ userGuide$?.title ?? "Not Found" }}</span>
+  <span class="example-spacer"></span>
+  <button mat-icon-button>
+    <mat-icon>edit</mat-icon>
+  </button>
+  <button mat-icon-button color="danger" (click)="delete(userGuide$!!)">
+    <mat-icon>delete</mat-icon>
+  </button>
+</mat-toolbar>
+@if (loading) {
+<mat-progress-bar mode="indeterminate"></mat-progress-bar>
+}@else if (!loading && userGuide$ !== null) {
+<div class="user-guide-container">
+  <div class="guide-header mat-elevation-z2">
+    <h2 class="mat-headline-6">{{ userGuide$?.title }}</h2>
+    <p class="description">{{ userGuide$?.description }}</p>
+  </div>
+</div>
+} @else {
+<div class="empty-state">
+  <span>No user guide found!</span>
+</div>
+}

@@ -1,0 +1,69 @@
+<h2 mat-dialog-title>Create Developer</h2>
+
+<mat-dialog-content [formGroup]="developerForm$" class="form-container">
+  <mat-form-field appearance="outline">
+    <mat-label>Name</mat-label>
+    <input matInput formControlName="name" placeholder="Enter full name" />
+    <mat-error *ngIf="developerForm$.get('name')?.hasError('required')">
+      Name is required
+    </mat-error>
+  </mat-form-field>
+
+  <mat-form-field appearance="outline">
+    <mat-label>Profile Link</mat-label>
+    <input
+      matInput
+      formControlName="profile"
+      placeholder="e.g. Github raw Profile Link"
+    />
+    <mat-error *ngIf="developerForm$.get('profile')?.hasError('required')">
+      Profile Link is required
+    </mat-error>
+  </mat-form-field>
+
+  <mat-form-field appearance="outline">
+    <mat-label>Email</mat-label>
+    <input
+      matInput
+      type="email"
+      formControlName="email"
+      placeholder="Enter email address"
+    />
+    <mat-error *ngIf="developerForm$.get('email')?.hasError('required')">
+      Email is required
+    </mat-error>
+    <mat-error *ngIf="developerForm$.get('email')?.hasError('email')">
+      Enter a valid email
+    </mat-error>
+  </mat-form-field>
+
+  <div class="roles-container">
+    <label class="font-medium">Roles</label>
+    <mat-chip-listbox multiple>
+      <mat-chip-option
+        *ngFor="let role of roles"
+        [selected]="isRoleSelected(role)"
+        (click)="toggleRole(role)"
+      >
+        {{ role.replace("_", " ") }}
+      </mat-chip-option>
+    </mat-chip-listbox>
+  </div>
+</mat-dialog-content>
+
+<mat-dialog-actions align="end">
+  <button mat-button (click)="close()" [disabled]="loading">Cancel</button>
+  <button
+    mat-flat-button
+    color="primary"
+    (click)="submit()"
+    [disabled]="loading || developerForm$.invalid"
+  >
+    <mat-progress-spinner
+      *ngIf="loading"
+      diameter="20"
+      mode="indeterminate"
+    ></mat-progress-spinner>
+    <span *ngIf="!loading">Create</span>
+  </button>
+</mat-dialog-actions>

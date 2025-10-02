@@ -36,7 +36,7 @@ fun NoTaskFound(
             text = "No Task Found",
             modifier = Modifier.padding(16.dp)
         )
-        BouncingArrow()
+
         Spacer(modifier = Modifier.height(8.dp))
         content()
 

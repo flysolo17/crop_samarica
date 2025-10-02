@@ -1,0 +1,52 @@
+.dialog-content {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+  min-width: 400px;
+}
+
+.form-section {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+
+  .section-title {
+    font-size: 1rem;
+    font-weight: 600;
+    margin: 0 0 0.5rem;
+    color: #444;
+  }
+}
+
+.stages-container {
+  display: flex;
+  overflow-x: auto;
+  padding: 0.25rem 0;
+
+  mat-chip-listbox {
+    display: flex;
+    flex-wrap: nowrap;
+    gap: 0.5rem;
+  }
+
+  mat-chip-option {
+    min-width: 110px;
+    justify-content: center;
+    font-weight: 500;
+  }
+}
+
+.row {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.prevention-block {
+  border-left: 3px solid #e0e0e0;
+  padding-left: 1rem;
+  margin-bottom: 1rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}

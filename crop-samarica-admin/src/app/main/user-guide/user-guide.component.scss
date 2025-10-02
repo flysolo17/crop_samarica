@@ -1,0 +1,34 @@
+.container {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+  gap: 1rem;
+  padding: 1rem;
+
+  .item {
+    display: flex;
+    flex-direction: column;
+
+    &:hover {
+      transform: translateY(-4px); // subtle lift
+      box-shadow: 0 6px 16px rgba(0, 0, 0, 0.2); // stronger shadow
+    }
+
+    mat-card-title {
+      display: -webkit-box;
+      -webkit-line-clamp: 1;
+      -webkit-box-orient: vertical;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    mat-card-subtitle {
+      display: -webkit-box;
+      -webkit-line-clamp: 2;
+      -webkit-box-orient: vertical;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      min-height: 3em; // keeps space for 2 lines
+      line-height: 1.5em;
+    }
+  }
+}

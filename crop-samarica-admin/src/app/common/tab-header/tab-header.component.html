@@ -1,0 +1,18 @@
+<div class="tab-header">
+  <div>
+    <h1 class="text-2xl font-semibold mb-4">{{ title }}</h1>
+    <p *ngIf="description" class="text-gray-600">{{ description }}</p>
+  </div>
+  @if(showSearch) {
+  <div class="tab-search">
+    <input
+      type="text"
+      placeholder="Search..."
+      [value]="searchText || ''"
+      (input)="onSearchTextChange($event)"
+    />
+  </div>
+  }
+</div>
+
+<mat-divider class="mt-16"></mat-divider>

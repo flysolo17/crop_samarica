@@ -3,9 +3,11 @@ package com.jmballangca.cropsamarica.core.di
 import com.jmballangca.cropsamarica.domain.repository.AuthRepository
 import com.jmballangca.cropsamarica.domain.repository.impl.AuthRepositoryImpl
 import com.jmballangca.cropsamarica.domain.repository.AyaRepository
-import com.jmballangca.cropsamarica.domain.repository.ConversationRepository
-import com.jmballangca.cropsamarica.domain.repository.ConversationRepositoryImpl
+import com.jmballangca.cropsamarica.domain.repository.CommonRepository
+import com.jmballangca.cropsamarica.domain.repository.CommonRepositoryImpl
 import com.jmballangca.cropsamarica.domain.repository.ForecastRepository
+import com.jmballangca.cropsamarica.domain.repository.PestAndDiseasesRepository
+import com.jmballangca.cropsamarica.domain.repository.impl.PestAndDiseasesRepositoryImpl
 import com.jmballangca.cropsamarica.domain.repository.RiceFieldRepository
 import com.jmballangca.cropsamarica.domain.repository.TaskRepository
 import com.jmballangca.cropsamarica.domain.repository.impl.TaskRepositoryImpl
@@ -48,9 +50,17 @@ abstract class RepositoryModule {
         impl: TaskRepositoryImpl
     ): TaskRepository
 
-    @Binds
-    abstract fun bindConversationRepository(
-        impl: ConversationRepositoryImpl
-    ): ConversationRepository
 
+
+
+    @Binds
+    abstract fun bindPestAndDiseaseRepository(
+        impl: PestAndDiseasesRepositoryImpl
+    ): PestAndDiseasesRepository
+
+
+    @Binds
+    abstract fun bindCommonRepository(
+        impl: CommonRepositoryImpl
+    ): CommonRepository
 }

@@ -1,0 +1,74 @@
+<mat-toolbar [color]="'primary'">
+  <button mat-icon-button (click)="goBack()" class="example-icon">
+    <mat-icon>arrow_back</mat-icon>
+  </button>
+  <span>{{ pestManagement$?.title ?? "Pest and Disease Not Found!" }}</span>
+</mat-toolbar>
+@if (loading) {
+<mat-progress-bar mode="indeterminate"></mat-progress-bar>
+} @if (!loading && pestManagement$ !== null) {
+<div class="content-container p-3">
+  <app-carousel [images]="pestManagement$.images || []"></app-carousel>
+  <h1>{{ pestManagement$.title }}</h1>
+  <div class="details" style="margin-top: 1rem">
+    <p>{{ pestManagement$.description }}</p>
+  </div>
+  <div
+    style="display: flex; gap: 10px; align-items: center; margin-bottom: 1rem"
+  >
+    <img
+      src="assets/images/prevention.png"
+      alt="solution icon"
+      style="width: 24px; height: 24px"
+    />
+    <h2 class="fw-bold" style="margin: 0">Stages</h2>
+  </div>
+  <mat-chip-listbox style="margin-bottom: 1rem">
+    @for (item of pestManagement$.stages; track $index) {
+    <mat-chip color="primary" selected>{{ item }}</mat-chip>
+    }
+  </mat-chip-listbox>
+  <div style="display: flex; gap: 10px; align-items: center">
+    <img
+      src="assets/images/symptoms.jpg"
+      alt="solution icon"
+      style="width: 24px; height: 24px"
+    />
+    <h2 class="fw-bold" style="margin: 0">Symptoms</h2>
+  </div>
+
+  <ul>
+    <li *ngFor="let text of pestManagement$.symptoms">{{ text }}</li>
+  </ul>
+  <div
+    style="display: flex; gap: 10px; align-items: center; margin-bottom: 1rem"
+  >
+    <img
+      src="assets/images/prevention.png"
+      alt="solution icon"
+      style="width: 24px; height: 24px"
+    />
+    <h2 class="fw-bold" style="margin: 0">Prevention</h2>
+  </div>
+  <mat-accordion>
+    <mat-expansion-panel
+      *ngFor="let item of pestManagement$?.prevention; let i = index"
+    >
+      <mat-expansion-panel-header>
+        <mat-panel-title>
+          {{ item.title }}
+        </mat-panel-title>
+        <mat-panel-description>
+          <!-- The arrow is automatically added on the right -->
+        </mat-panel-description>
+      </mat-expansion-panel-header>
+
+      <div class="prevention-text">
+        <ul>
+          <li *ngFor="let text of item.text">{{ text }}</li>
+        </ul>
+      </div>
+    </mat-expansion-panel>
+  </mat-accordion>
+</div>
+}

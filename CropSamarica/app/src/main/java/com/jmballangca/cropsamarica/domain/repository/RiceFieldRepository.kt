@@ -14,4 +14,14 @@ interface RiceFieldRepository {
     fun getRiceField(
         riceFieldId: String
     ) : Flow<RiceFieldWithWeather>
+
+    fun getRiceFieldWithId(
+        riceFieldId: String,
+    ) : Flow<RiceField>
+
+
+   suspend fun deleteCropField(
+        id: String
+    ) : Result<String>
+
 }

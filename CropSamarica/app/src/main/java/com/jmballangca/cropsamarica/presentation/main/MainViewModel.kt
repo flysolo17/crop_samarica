@@ -3,6 +3,7 @@ package com.jmballangca.cropsamarica.presentation.main
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.jmballangca.cropsamarica.domain.repository.AuthRepository
+import com.jmballangca.cropsamarica.domain.repository.CommonRepository
 import com.jmballangca.cropsamarica.domain.repository.RiceFieldRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.ExperimentalCoroutinesApi
@@ -21,12 +22,14 @@ import javax.inject.Inject
 @HiltViewModel
 class MainViewModel @Inject constructor(
     private val authRepository: AuthRepository,
-    private val riceFieldRepository: RiceFieldRepository
+    private val riceFieldRepository: RiceFieldRepository,
+    private val commonRepository: CommonRepository
 ): ViewModel() {
     private var _mainState = MutableStateFlow(
         MainState()
     )
     val mainState = _mainState.asStateFlow()
+
     init {
         getUserFlow()
     }
@@ -47,18 +50,22 @@ class MainViewModel @Inject constructor(
             }
             .flatMapLatest { user ->
                 _mainState.value = _mainState.value.copy(user = user)
-                val riceFieldFlow = user?.let {
-                    riceFieldRepository.getAllByUid(it.id)
-                } ?: flowOf(emptyList())
-
-                riceFieldFlow.map { riceFields ->
-                    user to riceFields
+                if (user == null) {
+                    flowOf(Triple(null, emptyList(), emptyList()))
+                } else {
+                    val riceFieldFlow = riceFieldRepository.getAllByUid(user.id)
+                    val notificationFlow = commonRepository.getAllMyNotifications(user.id)
+                    combine(riceFieldFlow, notificationFlow) { riceFields, notifications ->
+                        Triple(user, riceFields, notifications)
+                    }
                 }
             }
-            .onEach { (_, riceFields) ->
+            .onEach { (user, riceFields, notifications) ->
                 _mainState.value = _mainState.value.copy(
                     isLoading = false,
+                    user = user,
                     riceFields = riceFields,
+                    notifications = notifications,
                     selectedRiceField = riceFields.getOrNull(0)
                 )
             }

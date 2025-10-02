@@ -1,0 +1,72 @@
+.user-container {
+  display: flex;
+  justify-content: center;
+  margin-top: 2rem;
+}
+
+.profile-card {
+  width: 350px;
+  border-radius: 16px;
+  min-width: 750px;
+  overflow: hidden;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+  text-align: center;
+  padding: 1rem;
+}
+
+.profile-content {
+  display: flex;
+
+  flex-direction: column;
+  align-items: center;
+}
+
+.avatar-container {
+  display: flex;
+  justify-content: center;
+  margin-bottom: 1rem;
+  cursor: pointer;
+}
+
+.profile-avatar {
+  width: 120px;
+  height: 120px;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 3px solid #e0e0e0;
+  transition: 0.3s;
+}
+
+.profile-avatar:hover {
+  opacity: 0.8;
+  transform: scale(1.02);
+}
+
+.profile-name {
+  font-size: 1.2rem;
+  font-weight: 600;
+  margin-bottom: 0.25rem;
+}
+
+.profile-email {
+  font-size: 0.95rem;
+  color: #666;
+  margin-bottom: 1rem;
+}
+
+mat-card-actions {
+  margin-top: 0.5rem;
+}
+
+.not-found {
+  text-align: center;
+  margin-top: 3rem;
+  color: #999;
+}
+
+.profile-actions {
+  display: flex;
+  justify-content: center; /* centers buttons horizontally */
+  gap: 1rem; /* spacing between buttons */
+  margin-top: 1rem;
+}

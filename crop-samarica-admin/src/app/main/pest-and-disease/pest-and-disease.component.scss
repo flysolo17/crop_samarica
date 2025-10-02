@@ -1,0 +1,44 @@
+.data-container-grid {
+  display: grid;
+  /* 👇 cards will stay at ~300px wide, and auto-wrap */
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  gap: 16px;
+  padding: 16px;
+  justify-content: center; /* centers leftover space */
+  box-sizing: border-box;
+}
+
+/* Ensure mat-card is uniform */
+.example-card {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  max-width: 420px; /* 👈 keeps width consistent */
+  margin: 0 auto; /* centers card inside grid cell */
+}
+
+/* Consistent image size */
+.example-card img {
+  height: 180px;
+  object-fit: cover;
+  width: 100%;
+}
+
+/* Description clamp (3 lines, ellipsis) */
+.example-card mat-card-header mat-card-subtitle {
+  display: -webkit-box;
+  -webkit-line-clamp: 3; /* max lines */
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  line-height: 1.4em;
+  min-height: calc(1.4em * 3); /* keeps 3 lines min */
+  margin: 0;
+}
+
+/* Actions pinned at bottom */
+.example-card mat-card-actions {
+  margin-top: auto;
+  display: flex;
+  justify-content: space-between;
+}

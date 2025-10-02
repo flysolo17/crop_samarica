@@ -8,6 +8,7 @@ import com.google.firebase.ai.type.Tool
 import com.google.firebase.ai.type.content
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
+import com.jmballangca.cropsamarica.core.utils.CREATE_REMINDER
 import com.jmballangca.cropsamarica.core.utils.SYSTEM_PROMPT
 import com.jmballangca.cropsamarica.domain.repository.impl.AyaRepositoryImpl
 import com.jmballangca.cropsamarica.domain.repository.impl.RiceFieldRepositoryImpl
@@ -44,7 +45,8 @@ object FirebaseModules {
                         functionDeclarations = listOf(
                             AyaRepositoryImpl.CREATE_RICE_FIELD_DECLARATION,
                             RiceFieldRepositoryImpl.CREATE_ANNOUNCEMENT,
-                            AyaRepositoryImpl.QUESTION_GENERATION_DECLARATION
+                            AyaRepositoryImpl.QUESTION_GENERATION_DECLARATION,
+                            CREATE_REMINDER
                         )
                     )
                 ),

@@ -1,0 +1,44 @@
+<div *ngIf="admin$ | async as admin; else notFound" class="user-container">
+  <mat-card class="profile-card">
+    <mat-card-content class="profile-content">
+      <div class="avatar-container">
+        <label for="avatarInput">
+          <img
+            class="profile-avatar"
+            [src]="
+              admin?.profile ||
+              'https://www.bu.edu/dental/files/2017/10/Avatar.jpg'
+            "
+            alt="User avatar"
+          />
+        </label>
+        <input
+          type="file"
+          id="avatarInput"
+          accept="image/*"
+          hidden
+          (change)="onFileSelected($event)"
+        />
+      </div>
+
+      <mat-card-title class="profile-name">
+        {{ admin.name }}
+      </mat-card-title>
+      <mat-card-subtitle class="profile-email">
+        {{ admin.email }}
+      </mat-card-subtitle>
+    </mat-card-content>
+    <mat-card-actions class="profile-actions">
+      <button mat-raised-button color="primary" (click)="editProfile(admin)">
+        Edit Profile
+      </button>
+      <button mat-raised-button color="warn" (click)="logout()">Logout</button>
+    </mat-card-actions>
+  </mat-card>
+</div>
+
+<ng-template #notFound>
+  <div class="not-found">
+    <h3>User Not Found!</h3>
+  </div>
+</ng-template>

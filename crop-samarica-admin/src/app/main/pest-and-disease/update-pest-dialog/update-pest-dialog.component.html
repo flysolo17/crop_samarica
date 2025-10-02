@@ -1,0 +1,120 @@
+<h2 mat-dialog-title>Edit</h2>
+
+<mat-dialog-content [formGroup]="form" class="dialog-content">
+  <!-- Basic Info -->
+  <section class="form-section">
+    <h3 class="section-title">Basic Information</h3>
+    <mat-form-field class="w-100">
+      <mat-label>Title</mat-label>
+      <input matInput formControlName="title" />
+    </mat-form-field>
+
+    <mat-form-field class="w-100">
+      <mat-label>Description</mat-label>
+      <textarea matInput formControlName="description" rows="3"></textarea>
+    </mat-form-field>
+  </section>
+
+  <!-- Stages -->
+  <section class="form-section">
+    <h3 class="section-title">Growth Stages</h3>
+    <div class="stages-container w-100">
+      <mat-chip-listbox formArrayName="stages" multiple>
+        <mat-chip-option
+          *ngFor="let stage of riceStages"
+          [value]="stage"
+          [selected]="stages.value.includes(stage)"
+          (click)="toggleStage(stage)"
+        >
+          {{ stage }}
+        </mat-chip-option>
+      </mat-chip-listbox>
+    </div>
+  </section>
+
+  <!-- Symptoms -->
+  <section class="form-section">
+    <h3 class="section-title">Symptoms</h3>
+    <div formArrayName="symptoms" class="w-100">
+      <div
+        *ngFor="let symptomCtrl of symptoms.controls; let i = index"
+        class="w-100"
+      >
+        <mat-form-field class="w-100">
+          <mat-label>Symptom</mat-label>
+          <input matInput [formControlName]="i" />
+          <button
+            mat-icon-button
+            matSuffix
+            color="warn"
+            type="button"
+            (click)="removeSymptom(i)"
+          >
+            <mat-icon>delete</mat-icon>
+          </button>
+        </mat-form-field>
+      </div>
+      <button
+        mat-stroked-button
+        type="button"
+        class="w-100"
+        (click)="addSymptom()"
+      >
+        + Add Symptom
+      </button>
+    </div>
+  </section>
+
+  <!-- Prevention -->
+  <section class="form-section">
+    <h3 class="section-title">Prevention</h3>
+    <div formArrayName="prevention" class="w-100">
+      <div
+        *ngFor="let group of prevention.controls; let i = index"
+        [formGroupName]="i"
+        class="prevention-block w-100"
+      >
+        <!-- Prevention title -->
+        <mat-form-field class="w-100">
+          <mat-label>Prevention Title</mat-label>
+          <input matInput formControlName="title" />
+        </mat-form-field>
+
+        <!-- Prevention texts -->
+        <div formArrayName="text" class="w-100">
+          <div
+            *ngFor="let textCtrl of getPreventionTextControls(i); let j = index"
+            class="w-100"
+          >
+            <mat-form-field class="w-100">
+              <mat-label>Prevention Step</mat-label>
+              <input matInput [formControlName]="j" />
+              <button
+                mat-icon-button
+                matSuffix
+                color="warn"
+                type="button"
+                (click)="removePreventionText(i, j)"
+              >
+                <mat-icon>delete</mat-icon>
+              </button>
+            </mat-form-field>
+          </div>
+          <button
+            mat-stroked-button
+            type="button"
+            class="w-100"
+            (click)="addPreventionText(i)"
+          >
+            + Add Text
+          </button>
+        </div>
+      </div>
+    </div>
+  </section>
+</mat-dialog-content>
+
+<mat-dialog-actions align="end" class="w-100">
+  <button mat-button (click)="onNoClick()">Cancel</button>
+  <button mat-raised-button color="primary" (click)="save()">Save</button>
+</mat-dialog-actions>

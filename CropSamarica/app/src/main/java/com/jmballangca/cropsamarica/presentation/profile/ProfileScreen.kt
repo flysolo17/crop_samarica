@@ -64,6 +64,9 @@ import com.jmballangca.cropsamarica.presentation.home.components.ProfileImage
 import com.jmballangca.cropsamarica.presentation.navigation.ONBOARDING
 import androidx.core.graphics.scale
 import coil.compose.AsyncImage
+import com.jmballangca.cropsamarica.presentation.navigation.AUTH
+import com.jmballangca.cropsamarica.presentation.navigation.DEVELOPERS
+import com.jmballangca.cropsamarica.presentation.navigation.USER_GUIDE
 import com.jmballangca.cropsamarica.presentation.profile.components.ChangePassword
 import com.jmballangca.cropsamarica.presentation.profile.components.EditProfile
 import com.jmballangca.cropsamarica.ui.theme.CropSamaricaTheme
@@ -85,7 +88,7 @@ fun ProfileScreen(
         oneTimeEvents.collect {
             when (it) {
                 is OneTimeEvents.Navigate -> {
-                    if (it.route == ONBOARDING) {
+                    if (it.route == AUTH) {
                         primaryNavController.navigate(it.route) {
                             popUpTo(navController.graph.id) {
                                 inclusive = true
@@ -120,7 +123,8 @@ fun ProfileScreen(
                 events = events,
                 onLogout = {
                     events(ProfileEvents.OnLogout)
-                }
+                },
+                navController = navController
             )
         }
         else -> {
@@ -141,7 +145,8 @@ fun ProfileScreen(
     user: User,
     onLogout: () -> Unit,
     onBack : () -> Unit,
-    events: (ProfileEvents) -> Unit
+    events: (ProfileEvents) -> Unit,
+    navController: NavController,
 ) {
     Scaffold(
         modifier = modifier.fillMaxSize(),
@@ -273,12 +278,16 @@ fun ProfileScreen(
             ProfileButtons(
                 icon = Icons.Filled.Book,
                 title = "User Guide",
-                onClick = { }
+                onClick = {
+                    navController.navigate(USER_GUIDE)
+                }
             )
             ProfileButtons(
                 icon = Icons.Filled.Code,
                 title = "Developers",
-                onClick = { }
+                onClick = {
+                    navController.navigate(DEVELOPERS)
+                }
             )
 
 
@@ -347,7 +356,8 @@ private fun ProfileScreenPrev() {
             ),
             onBack = {},
             onLogout = {},
-            events = {}
+            events = {},
+            navController = NavController(LocalContext.current)
         )
     }
 

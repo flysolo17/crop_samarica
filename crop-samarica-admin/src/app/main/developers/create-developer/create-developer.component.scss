@@ -1,0 +1,27 @@
+.form-container {
+  display: flex;
+  flex-direction: column;
+  gap: 16px; // spacing between fields
+}
+
+mat-form-field {
+  width: 100%;
+}
+
+.roles-container {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+
+  mat-chip-listbox {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+
+    mat-chip-option {
+      cursor: pointer;
+      min-width: 140px;
+      justify-content: center;
+    }
+  }
+}

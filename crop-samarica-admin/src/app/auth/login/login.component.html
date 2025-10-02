@@ -1,0 +1,61 @@
+<div class="login-container">
+  <mat-card class="login-card">
+    <mat-card-content class="p-3">
+      <img src="../../../assets/images/logo.png" width="180px" />
+      <mat-card-header class="login-card-header">
+        <mat-card-title>Login</mat-card-title>
+      </mat-card-header>
+
+      <mat-error *ngIf="errorMessage" class="error-message p-3">
+        {{ errorMessage }}
+      </mat-error>
+      <form [formGroup]="loginForm$" (ngSubmit)="submit()">
+        <mat-form-field appearance="fill" class="full-width">
+          <mat-label>Email</mat-label>
+          <input matInput formControlName="email" type="email" required />
+          <mat-error *ngIf="loginForm$.get('email')?.hasError('required')">
+            Email is required
+          </mat-error>
+          <mat-error *ngIf="loginForm$.get('email')?.hasError('email')">
+            Please enter a valid email address
+          </mat-error>
+        </mat-form-field>
+        <mat-form-field appearance="fill" class="full-width">
+          <mat-label>Password</mat-label>
+          <input
+            matInput
+            formControlName="password"
+            type="password"
+            required
+            minlength="6"
+          />
+          <mat-error *ngIf="loginForm$.get('password')?.hasError('required')">
+            Password is required
+          </mat-error>
+          <mat-error *ngIf="loginForm$.get('password')?.hasError('minlength')">
+            Password must be at least 6 characters long
+          </mat-error>
+        </mat-form-field>
+        <button
+          mat-raised-button
+          class="w-100"
+          color="primary"
+          type="submit"
+          [disabled]="loginForm$.invalid || loading"
+        >
+          {{ loading ? "Logging in..." : "Login" }}
+        </button>
+        <button
+          mat-stroked-button
+          class="w-100"
+          color="primary"
+          (click)="openForgotPasswordDialog()"
+          type="button"
+          style="margin-top: 1rem"
+        >
+          Forget Password
+        </button>
+      </form>
+    </mat-card-content>
+  </mat-card>
+</div>

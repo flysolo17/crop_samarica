@@ -1,0 +1,42 @@
+<app-tab-header
+  [title]="'Developers'"
+  [showSearch]="false"
+  [description]="
+    'The dedicated people behind the Crop Samarica Project, working together to design, build, and maintain the platform for farmers and communities.'
+  "
+>
+</app-tab-header>
+<div class="container">
+  <div
+    style="
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      width: 100%;
+    "
+  >
+    <div></div>
+    <button mat-flat-button color="primary" (click)="openDialog()">
+      <mat-icon>add</mat-icon>
+      Create
+    </button>
+  </div>
+</div>
+
+<div class="developers-grid">
+  <mat-card *ngFor="let dev of developers$ | async" class="developer-card">
+    <div class="profile">
+      <img
+        [src]="dev.profile || 'assets/avatar-placeholder.png'"
+        alt="profile"
+      />
+    </div>
+
+    <mat-card-content>
+      <h3 class="name">{{ dev.name }}</h3>
+      <p class="email">{{ dev.email }}</p>
+
+      <p class="roles" style="max-lines: 1">{{ formatRoles(dev.roles) }}</p>
+    </mat-card-content>
+  </mat-card>
+</div>

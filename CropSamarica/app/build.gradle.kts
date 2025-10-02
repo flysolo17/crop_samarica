@@ -67,6 +67,11 @@ dependencies {
     implementation(libs.androidx.credentials.play.services.auth)
     implementation(libs.googleid)
     implementation(libs.androidx.foundation.layout)
+    implementation(libs.firebase.inappmessaging.display)
+    implementation(libs.firebase.messaging)
+    implementation(libs.androidx.ui.text.google.fonts)
+    implementation(libs.material3)
+    implementation(libs.firebase.storage)
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
@@ -93,9 +98,7 @@ dependencies {
     implementation("com.squareup.okhttp3:okhttp:4.12.0")
     implementation("com.squareup.okhttp3:logging-interceptor:4.12.0")
 
-//    val room_version = "2.7.2"
-//    implementation("androidx.room:room-runtime:${room_version}")
-//    ksp("androidx.room:room-compiler:$room_version")
+
 
     implementation("com.github.flysolo17:FormBuilder:1.0.6")
 
@@ -108,14 +111,15 @@ dependencies {
 
     implementation("com.airbnb.android:lottie-compose:6.6.6")
 
-    // Also add the dependencies for the Credential Manager libraries and specify their versions
     implementation("androidx.credentials:credentials:1.3.0")
     implementation("androidx.credentials:credentials-play-services-auth:1.3.0")
     implementation("com.google.android.libraries.identity.googleid:googleid:1.1.1")
 
-
-
     val room_version = "2.8.0"
     implementation("androidx.room:room-runtime:$room_version")
     ksp("androidx.room:room-compiler:$room_version")
+
+
+    implementation("com.pierfrancescosoffritti.androidyoutubeplayer:core:12.1.0")
+    
 }

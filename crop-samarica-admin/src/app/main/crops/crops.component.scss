@@ -1,0 +1,81 @@
+.demo-table {
+  width: 100%;
+}
+
+.mat-mdc-row .mat-mdc-cell {
+  border-bottom: 1px solid transparent;
+  border-top: 1px solid transparent;
+  cursor: pointer;
+}
+
+.mat-mdc-row:hover .mat-mdc-cell {
+  border-color: currentColor;
+}
+
+.demo-row-is-clicked {
+  font-weight: bold;
+}
+.container {
+  display: flex;
+  flex-wrap: wrap; // allow items to wrap on smaller screens
+  padding: 1rem;
+  gap: 1rem;
+
+  .item {
+    flex: 1 1 200px; // grow, shrink, but prefer 200px
+    min-width: 200px; // prevents items from shrinking too much
+    max-width: 100%; // ensures they don’t overflow
+    background-color: white;
+    border-radius: 1rem;
+    padding: 1rem;
+    box-sizing: border-box; // padding won’t break width
+  }
+}
+
+.table-container {
+  padding: 1rem;
+  border-radius: 1rem;
+}
+.stage-card {
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  flex: 1 1 auto;
+  background: #fff;
+  border-radius: 12px;
+  border: 2px solid #e0e0e0;
+  padding: 12px 16px;
+  width: 220px; // adjust width as needed
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.08);
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+
+  &:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 16px rgba(0, 0, 0, 0.12);
+  }
+}
+
+.stage-icon {
+  width: 40px;
+  height: 40px;
+  object-fit: contain;
+  margin-right: 12px;
+}
+
+.stage-info {
+  display: flex;
+  flex-direction: column;
+}
+
+.stage-name {
+  font-size: 14px;
+  font-weight: 600;
+  color: #333;
+}
+
+.stage-count {
+  font-size: 18px;
+  font-weight: bold;
+  color: var(--mdc-theme-primary, #1976d2);
+  margin: 0;
+}

@@ -1,0 +1,25 @@
+<app-tab-header
+  title="Users"
+  description="Manage application users"
+  [searchText]="searchTerm"
+  (searchTextChange)="onSearchTermChange($event)"
+></app-tab-header>
+<mat-progress-bar mode="indeterminate" *ngIf="loading"></mat-progress-bar>
+
+<div class="developers-grid">
+  <mat-card *ngFor="let dev of data" class="developer-card">
+    <div class="profile">
+      <img
+        [src]="
+          dev.profile || 'https://www.bu.edu/dental/files/2017/10/Avatar.jpg'
+        "
+        [alt]="dev.name"
+      />
+    </div>
+
+    <mat-card-content>
+      <h3 class="name">{{ dev.name }}</h3>
+      <p class="email">{{ dev.email }}</p>
+    </mat-card-content>
+  </mat-card>
+</div>

@@ -22,6 +22,7 @@ import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.firstOrNull
 import kotlinx.coroutines.flow.flatMapLatest
 import kotlinx.coroutines.flow.flowOf
@@ -32,6 +33,7 @@ import kotlinx.coroutines.flow.onStart
 import kotlinx.coroutines.flow.receiveAsFlow
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
+import java.util.Date
 import javax.inject.Inject
 import kotlin.collections.emptyList
 
@@ -67,30 +69,22 @@ class HomeViewModel @Inject constructor(
                 taskStatus = e.taskStatus,
                 result = e.result
             )
-
-            is HomeEvents.OnDeleteTask -> deleteTask(
-                id = e.id,
-                result = e.result
-            )
-
-            is HomeEvents.OnEditTask -> editTask(
-                task = e.task,
-                result = e.result
-            )
-
-            is HomeEvents.OnCreateTask -> createTask(e.title, e.description, e.result)
+            is HomeEvents.OnCreateTask -> createTask(e.title, e.description,e.startDate,e.dueDate, e.result)
         }
     }
 
     private fun createTask(
         title: String,
         description: String,
+        startDate: Date?,
+        dueDate: Date?,
         result: (UIState<String>) -> Unit
     ):  Job {
         return viewModelScope.launch {
             val task = Task(
                 title = title,
-
+                startDate = startDate,
+                dueDate = dueDate,
                 description = description,
                 status = TaskStatus.PENDING,
                 stage = state.value.riceFieldWithWeather?.riceField?.stage ?: RiceStage.SEEDLING,
@@ -103,29 +97,7 @@ class HomeViewModel @Inject constructor(
         }
     }
 
-    private fun editTask(
-        task: Task,
-        result: (UIState<String>) -> Unit
-    ): Job {
-        return viewModelScope.launch {
-            taskRepository.update(
-                task = task,
-                result = result
-            )
-        }
-    }
 
-    private fun deleteTask(
-        id: String,
-        result: (UIState<String>) -> Unit
-    ): Job {
-        return viewModelScope.launch {
-            taskRepository.delete(
-                id = id,
-                result = result
-            )
-        }
-    }
 
     private fun changeStatus(
         id: String,
@@ -142,22 +114,26 @@ class HomeViewModel @Inject constructor(
     }
 
 
-    private fun getRiceField(
-        riceFieldId: String
-    ) {
-        riceFieldRepository.getRiceField(riceFieldId).onStart {
-            _state.value = _state.value.copy(
-                isLoading = true
-            )
-            delay(2000)
-        }.onEach {
-            _state.value = _state.value.copy(
-                isLoading = false,
-                riceFieldWithWeather = it
-            )
-            Log.d("Tasks", "getTasks: ${it.tasks}")
-        }.launchIn(viewModelScope)
-    }
+    private fun getRiceField(riceFieldId: String) {
+        val flow1 = riceFieldRepository.getRiceField(riceFieldId)
+        val flow2 = taskRepository.getTodayReminder(riceFieldId)
 
+        combine(flow1, flow2) { riceField, reminders ->
+            riceField to reminders // returns a Pair
+        }
+            .onStart {
+                _state.value = _state.value.copy(isLoading = true)
+            }
+            .onEach { (riceField, reminders) ->
+                _state.value = _state.value.copy(
+                    isLoading = false,
+                    riceFieldWithWeather = riceField,
+                    reminders = reminders // assuming your state has reminders
+                )
+                Log.d("Tasks", "getTasks: ${riceField.tasks}")
+                Log.d("Reminders", "getReminders: $reminders")
+            }
+            .launchIn(viewModelScope)
+    }
 
 }

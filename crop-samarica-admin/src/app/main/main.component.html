@@ -1,0 +1,70 @@
+<mat-sidenav-container class="sidenav-container vh-100">
+  <mat-sidenav mode="side" opened class="sidenav" fixedInViewport>
+    <div class="side-nav">
+      <!-- Header -->
+      <div class="header">
+        <img src="../../assets/images/logo.png" alt="logo" />
+      </div>
+
+      <!-- Nav items -->
+      <mat-nav-list role="list">
+        @for (item of navItems$; track $index) {
+        <a
+          class="nav-item"
+          mat-list-item
+          [routerLink]="item.link"
+          routerLinkActive="active-link"
+          [routerLinkActiveOptions]="{ exact: true }"
+        >
+          <mat-icon matListItemIcon>{{ item.icon }}</mat-icon>
+
+          <span class="label-text">{{ item.label }}</span>
+        </a>
+        }
+      </mat-nav-list>
+
+      <!-- Footer -->
+      <div class="footer">
+        <a
+          class="nav-item"
+          mat-list-item
+          routerLink="developers"
+          routerLinkActive="active-link"
+          [routerLinkActiveOptions]="{ exact: true }"
+        >
+          <mat-icon matListItemIcon>person</mat-icon>
+          <span class="label-text">Developers</span>
+        </a>
+
+        <a
+          class="nav-item"
+          mat-list-item
+          routerLink="user-guide"
+          routerLinkActive="active-link"
+          [routerLinkActiveOptions]="{ exact: true }"
+        >
+          <mat-icon matListItemIcon>book</mat-icon>
+          <span class="label-text">User Guide</span>
+        </a>
+
+        <mat-list-item [routerLink]="'profile'">
+          <img
+            matListItemAvatar
+            [src]="
+              user$?.profile ||
+              'https://www.bu.edu/dental/files/2017/10/Avatar.jpg'
+            "
+            alt="User avatar"
+          />
+          <div matListItemTitle>{{ user$?.name }}</div>
+          <div matListItemLine>{{ user$?.email }}</div>
+          <div matTra></div>
+        </mat-list-item>
+      </div>
+    </div>
+  </mat-sidenav>
+
+  <mat-sidenav-content class="sidenav-content">
+    <router-outlet></router-outlet>
+  </mat-sidenav-content>
+</mat-sidenav-container>

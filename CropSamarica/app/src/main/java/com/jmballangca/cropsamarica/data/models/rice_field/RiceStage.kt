@@ -1,20 +1,57 @@
 package com.jmballangca.cropsamarica.data.models.rice_field
 
+import androidx.annotation.DrawableRes
+import com.jmballangca.cropsamarica.R
 import com.jmballangca.cropsamarica.presentation.create_crop_field.components.RiceVariety
 import java.util.Date
 import java.util.concurrent.TimeUnit
 
-enum class RiceStage(name: String) {
-    SEEDLING("SEEDLING"),
-    TILLERING("TILLERING"),
-    STEM_ELONGATION("STEM_ELONGATION"),
-    PANICLE_INITIATION("PANICLE_INITIATION"),
-    BOOTING("BOOTING"),
-    FLOWERING("FLOWERING"),
-    MILKING("MILKING"),
-    DOUGH("DOUGH"),
-    MATURE("MATURE")
+enum class RiceStage(
+    val displayName: String,
+    @DrawableRes  val icon : Int
+) {
+    SEEDLING(
+        displayName = "SEEDLING",
+        icon = R.drawable.seedling
+    ),
+    TILLERING(
+        displayName ="TILLERING",
+        icon = R.drawable.tillering
+    ),
+    STEM_ELONGATION(
+        displayName ="STEM_ELONGATION",
+        icon = R.drawable.stem_elongation
+    ),
+    PANICLE_INITIATION(
+        displayName = "PANICLE_INITIATION",
+        icon = R.drawable.panicle_initiation
+    ),
+    BOOTING(
+        displayName="BOOTING",
+        icon = R.drawable.booting
+    ),
+    FLOWERING(displayName ="FLOWERING"
+        ,icon = R.drawable.flowering),
+    MILKING("MILKING",icon = R.drawable.milking),
+    DOUGH("DOUGH",icon = R.drawable.dough),
+    MATURE("MATURE",icon = R.drawable.mature)
 }
+
+fun RiceStage.getIcon() : Int {
+    return when (this) {
+        RiceStage.SEEDLING -> R.drawable.seedling
+        RiceStage.TILLERING -> R.drawable.tillering
+        RiceStage.STEM_ELONGATION -> R.drawable.stem_elongation
+        RiceStage.PANICLE_INITIATION -> R.drawable.panicle_initiation
+        RiceStage.BOOTING -> R.drawable.booting
+        RiceStage.FLOWERING -> R.drawable.flowering
+        RiceStage.MILKING -> R.drawable.milking
+        RiceStage.DOUGH -> R.drawable.dough
+        RiceStage.MATURE -> R.drawable.mature
+    }
+}
+
+
 
 fun Date.getRiceStage(): RiceStage {
     val currentDate = Date()

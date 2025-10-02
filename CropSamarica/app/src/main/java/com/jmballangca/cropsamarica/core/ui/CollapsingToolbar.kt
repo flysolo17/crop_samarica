@@ -47,7 +47,6 @@ fun CollapsingToolbar(
     title : @Composable () -> Unit ,
 ) {
     LargeTopAppBar(
-
         expandedHeight = 220.dp,
         title = title,
         navigationIcon = {

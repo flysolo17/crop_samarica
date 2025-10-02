@@ -30,7 +30,7 @@ fun ProfileImage(
     Box(
         modifier = modifier.size(imageSize)
             .background(
-                color = Color.Gray,
+                color = MaterialTheme.colorScheme.background,
                 shape = CircleShape
             )
             .clip(CircleShape)
@@ -51,6 +51,4 @@ fun ProfileImage(
             Text(name.getOrElse(0, defaultValue = {'J'}).uppercase())
         }
     }
-
-
 }

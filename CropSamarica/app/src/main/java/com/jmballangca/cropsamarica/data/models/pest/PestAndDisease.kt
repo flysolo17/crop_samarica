@@ -1,15 +1,14 @@
 package com.jmballangca.cropsamarica.data.models.pest
-
-
-
+import com.jmballangca.cropsamarica.data.models.rice_field.RiceStage
 
 data class PestAndDisease(
-    val id : String,
-    val images: List<String>,
-    val title : String,
-    val description : String,
-    val symptoms : List<String>,
-    val prevention : List<Prevention>,
+    val id : String = "",
+    val images: List<String> = emptyList(),
+    val stages : List<RiceStage> = emptyList(),
+    val title : String = "",
+    val description : String = "",
+    val symptoms : List<String> = emptyList(),
+    val prevention : List<Prevention> = emptyList(),
 ) {
     companion object{
 
@@ -33,17 +32,18 @@ data class PestAndDisease(
         )
     }
 }
-
 data class Prevention(
-    val title : String,
-    val text : List<String>,
+    val title : String = "",
+    val text : List<String> = emptyList(),
 )
-
-
 
 val  GOLDEN_APPLE_SNAIL = PestAndDisease(
     id = "1",
-    images = listOf(),
+    stages = listOf(RiceStage.SEEDLING, RiceStage.TILLERING),
+    images = listOf(
+        "https://raw.githubusercontent.com/flysolo17/crop_samarica/refs/heads/main/Images/Golden%20apple%20snail-2.jpg",
+        "https://raw.githubusercontent.com/flysolo17/crop_samarica/refs/heads/main/Images/Golden%20apple%20snail.jfif"
+    ),
     title = "Golden Apple Snail – Pest",
     description = "Golden apple snails eat young and emerging rice plants. They cut the rice stem at the base, destroying the whole plant. Snails are able to spread through irrigation canals, natural water distribution pathways, and during flooding events. They damage direct wet-seeded rice and transplanted rice up to 30 days old. Once the rice plant reaches 30−40 days, it will become thick enough to resist the snail.",
     symptoms =listOf(
@@ -97,7 +97,11 @@ val  GOLDEN_APPLE_SNAIL = PestAndDisease(
 // 2. Bacterial Leaf Blight
 val BACTERIAL_LEAF_BLIGHT = PestAndDisease(
     id = "2",
-    images = listOf(),
+    stages = listOf(RiceStage.SEEDLING, RiceStage.TILLERING, RiceStage.BOOTING),
+    images = listOf(
+        "https://raw.githubusercontent.com/flysolo17/crop_samarica/refs/heads/main/Images/Bacterial%20Leaf%20Blight-2.jpg",
+        "https://raw.githubusercontent.com/flysolo17/crop_samarica/refs/heads/main/Images/Bacterial%20Leaf%20Blight.jpg"
+    ),
     title = "Bacterial Leaf Blight – Fungus",
     description = "Bacterial leaf blight of rice is caused by the bacterium Xanthomonas oryzae pv. oryzae, which can survive on grass weeds and stubbles of infected plants. The disease spreads through wind, rain splash, and irrigation water, and its incidence becomes more severe under frequent rainfall, strong winds, humidity above 70%, and temperatures ranging from 25°C to 34°C. Practices such as heavy nitrogen fertilization and close planting favor its development. The earlier the infection, the higher the yield loss.",
     symptoms = listOf(
@@ -129,7 +133,11 @@ val BACTERIAL_LEAF_BLIGHT = PestAndDisease(
 // 3. Caseworm
 val CASEWORM = PestAndDisease(
     id = "3",
-    images = listOf(),
+    stages = listOf(RiceStage.SEEDLING, RiceStage.TILLERING),
+    images = listOf(
+        "https://raw.githubusercontent.com/flysolo17/crop_samarica/refs/heads/main/Images/Caseworm-2.jfif",
+        "https://raw.githubusercontent.com/flysolo17/crop_samarica/refs/heads/main/Images/Caseworm.jpg"
+    ),
     title = "Caseworm – Pest",
     description = "The rice caseworm is commonly found in rice fields with standing water, whether in wetland or irrigated environments. It survives on weeds and weedy rice nearby and infests new rice crops under favorable conditions. The pest is more problematic when young seedlings are transplanted. Poor land preparation and zinc-deficient soils predispose rice to damage. Outbreaks may cause significant damage if not managed properly.",
     symptoms = listOf(
@@ -171,7 +179,11 @@ val CASEWORM = PestAndDisease(
 // 4. Rice Blast
 val RICE_BLAST = PestAndDisease(
     id = "4",
-    images = listOf(),
+    stages = listOf(RiceStage.SEEDLING, RiceStage.TILLERING, RiceStage.BOOTING, RiceStage.FLOWERING),
+    images = listOf(
+        "https://raw.githubusercontent.com/flysolo17/crop_samarica/refs/heads/main/Images/Rice%20blast-2.jfif",
+        "https://raw.githubusercontent.com/flysolo17/crop_samarica/refs/heads/main/Images/Rice%20blast.jpg"
+    ),
     title = "Rice Blast – Fungus",
     description = "Caused by Magnaporthe oryzae. One of the most destructive diseases. Infects at nearly all stages. Promoted by excess nitrogen, cool/moist weather, drought stress, and poor drainage.",
     symptoms = listOf(
@@ -199,7 +211,17 @@ val RICE_BLAST = PestAndDisease(
 // 5. Rodents
 val RODENTS = PestAndDisease(
     id = "5",
-    images = listOf(),
+    stages = listOf(
+        RiceStage.SEEDLING,
+        RiceStage.TILLERING,
+        RiceStage.BOOTING,
+        RiceStage.MILKING,
+        RiceStage.MATURE
+    ),
+    images = listOf(
+        "https://raw.githubusercontent.com/flysolo17/crop_samarica/refs/heads/main/Images/Rodents-2.jpg",
+        "https://raw.githubusercontent.com/flysolo17/crop_samarica/refs/heads/main/Images/Rodents.jpg"
+    ),
     title = "Rodents – Pest",
     description = "Rice field rats (Rattus argentiventer) feed at all stages. Populations grow fast (up to 1,500/year). Thrive in double/triple cropping, weedy bunds, unmanaged edges, and burrows.",
     symptoms = listOf(
@@ -226,7 +248,11 @@ val RODENTS = PestAndDisease(
 // 6. Stem Borer
 val STEM_BORER = PestAndDisease(
     id = "6",
-    images = listOf(),
+    stages = listOf(RiceStage.SEEDLING, RiceStage.TILLERING, RiceStage.STEM_ELONGATION, RiceStage.BOOTING),
+    images = listOf(
+        "https://raw.githubusercontent.com/flysolo17/crop_samarica/refs/heads/main/Images/Stem%20Borer-2.jfif",
+        "https://raw.githubusercontent.com/flysolo17/crop_samarica/refs/heads/main/Images/Stem%20Borer.jpg"
+    ),
     title = "Stem Borer – Pest",
     description = "Stem borer infestation is caused by larvae of moth species such as the yellow stem borer (Scirpophaga incertulas) and the white stem borer (Scirpophaga innotata). The larvae bore into stems, feeding inside and cutting the flow of water and nutrients. They survive in rice stubbles, straw piles, ratoons, and volunteer rice, which serve as breeding and carry-over hosts. Continuous rice planting and poor residue management favor their rapid spread.",
     symptoms = listOf(
@@ -267,7 +293,11 @@ val STEM_BORER = PestAndDisease(
 // 7. Brown Spot
 val BROWN_SPOT = PestAndDisease(
     id = "7",
-    images = listOf(),
+    stages = listOf(RiceStage.SEEDLING, RiceStage.TILLERING, RiceStage.BOOTING, RiceStage.FLOWERING),
+    images = listOf(
+        "https://raw.githubusercontent.com/flysolo17/crop_samarica/refs/heads/main/Images/Brown%20spot-2.jpg",
+        "https://raw.githubusercontent.com/flysolo17/crop_samarica/refs/heads/main/Images/Brown%20spot.jpg"
+    ),
     title = "Brown Spot – Fungus",
     description = "Brown Spot is caused by the fungus Bipolaris oryzae. It attacks rice from seedling to maturity, especially under nutrient-deficient and drought-stressed conditions. The fungus survives in infected seeds, plant residues, and soil. Continuous planting, poor soil fertility, and unfavorable field management practices favor its spread.",
     symptoms = listOf(
@@ -277,6 +307,7 @@ val BROWN_SPOT = PestAndDisease(
         "Reduced tillering and poor grain filling",
         "Sometimes empty grains"
     ),
+
     prevention = listOf(
         Prevention(
             "Cultural and Physical Controls",
@@ -303,7 +334,11 @@ val BROWN_SPOT = PestAndDisease(
 // 8. Leaf Folder
 val LEAF_FOLDER = PestAndDisease(
     id = "8",
-    images = listOf(),
+    stages = listOf(RiceStage.SEEDLING, RiceStage.TILLERING, RiceStage.BOOTING, RiceStage.FLOWERING),
+    images = listOf(
+        "https://raw.githubusercontent.com/flysolo17/crop_samarica/refs/heads/main/Images/Leaf%20Folder-2.jfif",
+        "https://raw.githubusercontent.com/flysolo17/crop_samarica/refs/heads/main/Images/Leaf%20Folder.jpg"
+    ),
     title = "Leaf Folder – Pest",
     description = "Leaf Folder infestation is caused by larvae of moths (Cnaphalocrocis medinalis and related species). The larvae hide and feed inside folded leaves, reducing photosynthesis. Infestation increases with continuous planting, dense canopy, and high nitrogen use. Adults are mobile and spread quickly across fields.",
     symptoms = listOf(
@@ -342,7 +377,11 @@ val LEAF_FOLDER = PestAndDisease(
 // 9. Brown Planthopper
 val BROWN_PLANTHOPPER = PestAndDisease(
     id = "9",
-    images = listOf(),
+    stages = listOf(RiceStage.SEEDLING, RiceStage.TILLERING, RiceStage.BOOTING, RiceStage.FLOWERING),
+    images = listOf(
+        "https://raw.githubusercontent.com/flysolo17/crop_samarica/refs/heads/main/Images/Brown%20Planthopper-2.png",
+        "https://raw.githubusercontent.com/flysolo17/crop_samarica/refs/heads/main/Images/Brown%20Planthopper.jpg"
+    ),
     title = "Brown Planthopper – Pest",
     description = "Brown planthoppers (Nilaparvata lugens) suck plant sap from the base of rice stems, weakening plants and reducing yield. Heavy infestations cause hopperburn, destroying entire fields. They also transmit grassy stunt and ragged stunt viruses. Populations increase rapidly in dense, nitrogen-rich fields and continuous cropping systems.",
     symptoms = listOf(
@@ -382,7 +421,11 @@ val BROWN_PLANTHOPPER = PestAndDisease(
 // 10. Green Leafhopper
 val GREEN_LEAFHOPPER = PestAndDisease(
     id = "10",
-    images = listOf(),
+    stages = listOf(RiceStage.SEEDLING, RiceStage.TILLERING, RiceStage.BOOTING, RiceStage.FLOWERING),
+    images = listOf(
+        "https://raw.githubusercontent.com/flysolo17/crop_samarica/refs/heads/main/Images/Green%20Leafhopper%20-2.jpg",
+        "https://raw.githubusercontent.com/flysolo17/crop_samarica/refs/heads/main/Images/Green%20Leafhopper.jfif"
+    ),
     title = "Green Leafhopper – Pest",
     description = "Green leafhoppers (Nephotettix virescens and related species) feed on rice by sucking plant sap, weakening plants and reducing yield. More importantly, they transmit tungro virus, one of the most destructive rice diseases. Populations increase rapidly with continuous planting, excessive nitrogen, and abundant weeds that serve as hosts.",
     symptoms = listOf(
@@ -418,7 +461,11 @@ val GREEN_LEAFHOPPER = PestAndDisease(
 // 11. False Smut
 val FALSE_SMUT = PestAndDisease(
     id = "11",
-    images = listOf(),
+    stages = listOf(RiceStage.SEEDLING, RiceStage.TILLERING, RiceStage.BOOTING, RiceStage.FLOWERING),
+    images = listOf(
+        "https://raw.githubusercontent.com/flysolo17/crop_samarica/refs/heads/main/Images/False%20Smut.jfif",
+        "https://raw.githubusercontent.com/flysolo17/crop_samarica/refs/heads/main/Images/False%20Smut.jpg"
+    ),
     title = "False Smut – Fungus",
     description = "False smut is caused by Ustilaginoidea virens. It affects rice from booting to maturity. The pathogen survives in soil and infected grains, spreading through air, rain, and irrigation water. High humidity and excess nitrogen favor its development.",
     symptoms = listOf(
@@ -450,7 +497,11 @@ val FALSE_SMUT = PestAndDisease(
 // 12. Sheath Rot
 val SHEATH_ROT = PestAndDisease(
     id = "12",
-    images = listOf(),
+    stages = listOf(RiceStage.SEEDLING, RiceStage.TILLERING, RiceStage.BOOTING, RiceStage.FLOWERING),
+    images = listOf(
+        "https://raw.githubusercontent.com/flysolo17/crop_samarica/refs/heads/main/Images/sheath%20rot-2.jfif",
+        "https://raw.githubusercontent.com/flysolo17/crop_samarica/refs/heads/main/Images/sheath%20rot.jpg"
+    ),
     title = "Sheath Rot – Fungus",
     description = "Sheath rot is mainly caused by Sarocladium oryzae. Infection occurs at booting to heading stages, favored by high humidity, dense planting, and excess nitrogen. The pathogen survives in seeds and crop residues and spreads through wind and rain.",
     symptoms = listOf(
@@ -483,7 +534,12 @@ val SHEATH_ROT = PestAndDisease(
 // 13. Sheath Blight
 val SHEATH_BLIGHT = PestAndDisease(
     id = "13",
-    images = listOf(),
+    stages = listOf(RiceStage.SEEDLING, RiceStage.TILLERING, RiceStage.BOOTING, RiceStage.FLOWERING),
+    images = listOf(
+        "https://raw.githubusercontent.com/flysolo17/crop_samarica/refs/heads/main/Images/Sheath%20blight-2.jpg",
+        "https://raw.githubusercontent.com/flysolo17/crop_samarica/refs/heads/main/Images/Sheath%20blight.jpg"
+
+    ),
     title = "Sheath Blight – Fungus",
     description = "Sheath blight is caused by Rhizoctonia solani. It spreads rapidly in fields with high humidity, dense planting, and high nitrogen input. The fungus survives in soil and plant debris, infecting rice from tillering to ripening stages.",
     symptoms = listOf(
@@ -515,7 +571,11 @@ val SHEATH_BLIGHT = PestAndDisease(
 // 14. Birds
 val BIRDS = PestAndDisease(
     id = "14",
-    images = listOf(),
+    stages = listOf(RiceStage.SEEDLING, RiceStage.TILLERING, RiceStage.BOOTING, RiceStage.FLOWERING),
+    images = listOf(
+        "https://raw.githubusercontent.com/flysolo17/crop_samarica/refs/heads/main/Images/Bird-2.jpg",
+        "https://raw.githubusercontent.com/flysolo17/crop_samarica/refs/heads/main/Images/Bird.jpg"
+    ),
     title = "Birds – Pest",
     description = "Birds such as maya (Lonchura spp.) and other grain-feeding species damage rice mainly during the ripening stage. They peck and eat grains, causing severe yield loss in small fields near roosting or nesting areas.",
     symptoms = listOf(
@@ -544,7 +604,11 @@ val BIRDS = PestAndDisease(
 // 15. Rice Bug
 val RICE_BUG = PestAndDisease(
     id = "15",
-    images = listOf(),
+    stages = listOf(RiceStage.SEEDLING, RiceStage.TILLERING, RiceStage.BOOTING, RiceStage.FLOWERING),
+    images = listOf(
+        "https://raw.githubusercontent.com/flysolo17/crop_samarica/refs/heads/main/Images/Rice%20bug-2.jpg",
+        "https://raw.githubusercontent.com/flysolo17/crop_samarica/refs/heads/main/Images/Rice%20bug.png"
+    ),
     title = "Rice Bug – Pest",
     description = "Rice bugs (Leptocorisa spp.) feed on rice grains during the milking to ripening stage by sucking the contents of developing kernels. This reduces grain quality and yield. They emit a foul odor when disturbed and populations build up in continuous cropping areas.",
     symptoms = listOf(
@@ -576,7 +640,11 @@ val RICE_BUG = PestAndDisease(
 // 16. Rice Black Bug
 val RICE_BLACK_BUG = PestAndDisease(
     id = "16",
-    images = listOf(),
+    stages = listOf(RiceStage.SEEDLING, RiceStage.TILLERING, RiceStage.BOOTING, RiceStage.FLOWERING),
+    images = listOf(
+        "https://raw.githubusercontent.com/flysolo17/crop_samarica/refs/heads/main/Images/Rice%20black%20bug.jfif",
+        "https://raw.githubusercontent.com/flysolo17/crop_samarica/refs/heads/main/Images/Rice%20black%20bug.jpg"
+    ),
     title = "Rice Black Bug – Pest",
     description = "Rice black bugs (Scotinophara spp.) suck sap from rice stems, causing tiller death and poor growth. They are nocturnal and hide during the day. Populations increase in poorly managed fields with continuous planting and abundant weeds. They often move in swarms.",
     symptoms = listOf(
@@ -604,9 +672,3 @@ val RICE_BLACK_BUG = PestAndDisease(
         )
     )
 )
-
-// Collect everything in one place
-object PestAndDiseaseData {
-
-}
-

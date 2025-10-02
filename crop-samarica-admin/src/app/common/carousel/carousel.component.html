@@ -1,0 +1,28 @@
+<div class="carousel-container">
+  <button mat-icon-button class="nav-button prev" (click)="prev()">
+    <mat-icon>chevron_left</mat-icon>
+  </button>
+
+  <div class="carousel-slide">
+    <img
+      *ngIf="images.length"
+      [src]="images[currentIndex]"
+      alt="carousel image"
+      class="carousel-image"
+    />
+  </div>
+
+  <button mat-icon-button class="nav-button next" (click)="next()">
+    <mat-icon>chevron_right</mat-icon>
+  </button>
+</div>
+
+<!-- Indicators -->
+<div class="carousel-indicators">
+  <button
+    *ngFor="let image of images; let i = index"
+    mat-icon-button
+    [class.active]="i === currentIndex"
+    (click)="currentIndex = i"
+  ></button>
+</div>

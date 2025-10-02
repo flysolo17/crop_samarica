@@ -1,4 +1,5 @@
 package com.jmballangca.cropsamarica.presentation.home
+import com.jmballangca.cropsamarica.core.utils.Reminder
 import com.jmballangca.cropsamarica.data.models.rice_field.RiceField
 import com.jmballangca.cropsamarica.data.models.rice_field.RiceFieldWithWeather
 import com.jmballangca.cropsamarica.data.models.task.TaskStatus
@@ -9,6 +10,7 @@ data class HomeState(
     val isLoading : Boolean = false,
     val riceFieldWithWeather: RiceFieldWithWeather? = null,
     val selectedTaskStatus: TaskStatus = TaskStatus.PENDING,
-    val recommendationResult: RecommendationResult ? = null
+    val recommendationResult: RecommendationResult ? = null,
+    val reminders : List<Reminder> = emptyList()
 )
 

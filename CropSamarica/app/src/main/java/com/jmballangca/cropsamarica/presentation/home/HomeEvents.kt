@@ -4,6 +4,7 @@ import com.jmballangca.cropsamarica.core.utils.UIState
 import com.jmballangca.cropsamarica.data.models.rice_field.RiceField
 import com.jmballangca.cropsamarica.data.models.task.Task
 import com.jmballangca.cropsamarica.data.models.task.TaskStatus
+import java.util.Date
 
 
 sealed interface HomeEvents {
@@ -22,19 +23,13 @@ sealed interface HomeEvents {
         val result : (UIState<String>) -> Unit
     ) : HomeEvents
 
-    data class OnDeleteTask(
-        val id : String,
-        val result : (UIState<String>) -> Unit
-    ) : HomeEvents
 
-    data class OnEditTask(
-        val task : Task,
-        val result : (UIState<String>) -> Unit
-    ) : HomeEvents
 
     data class OnCreateTask(
         val title : String,
         val description : String,
+        val startDate : Date? = null,
+        val dueDate : Date? = null,
         val result : (UIState<String>) -> Unit
     ) : HomeEvents
 

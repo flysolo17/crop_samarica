@@ -5,12 +5,14 @@ import androidx.compose.material.icons.filled.Chat
 import androidx.compose.material.icons.filled.ChatBubble
 import androidx.compose.material.icons.filled.Home
 import androidx.compose.material.icons.filled.Person
+import androidx.compose.material.icons.filled.PestControl
 import androidx.compose.material.icons.filled.Report
 import androidx.compose.material.icons.filled.Settings
 import androidx.compose.material.icons.filled.Task
 import androidx.compose.material.icons.outlined.ChatBubble
 import androidx.compose.material.icons.outlined.Home
 import androidx.compose.material.icons.outlined.Person
+import androidx.compose.material.icons.outlined.PestControl
 import androidx.compose.material.icons.outlined.Report
 import androidx.compose.material.icons.outlined.Settings
 import androidx.compose.material.icons.outlined.Task
@@ -34,10 +36,10 @@ data class NavigationItem<T : Any>(
                  unselectedIcon = Icons.Outlined.Home,
              ),
              NavigationItem(
-                 route = CHAT,
-                 label = "Ask Aya",
-                 selectedIcon = Icons.Filled.ChatBubble,
-                 unselectedIcon = Icons.Outlined.ChatBubble,
+                 route = PEST_AND_DISEASES,
+                 label = "Pest And Diseases",
+                 selectedIcon = Icons.Filled.PestControl,
+                 unselectedIcon = Icons.Outlined.PestControl,
              ),
              NavigationItem(
                  route = TASK,

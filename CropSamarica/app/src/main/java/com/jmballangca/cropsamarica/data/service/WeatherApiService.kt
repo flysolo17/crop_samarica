@@ -6,6 +6,7 @@ import com.jmballangca.cropsamarica.data.models.weather.BulkLocation
 import com.jmballangca.cropsamarica.data.models.weather.Current
 import com.jmballangca.cropsamarica.data.models.weather.Forecast
 import com.jmballangca.cropsamarica.data.models.weather.Location
+import com.jmballangca.cropsamarica.data.models.weather.SevenDayWeatherResponse
 import com.jmballangca.cropsamarica.data.models.weather.WeatherApiResponse
 import com.jmballangca.cropsamarica.data.models.weather.WeatherBulkApiResponse
 import kotlinx.serialization.Serializable
@@ -32,4 +33,11 @@ interface WeatherApiService {
         @Query("key") key: String = BuildConfig.WEATHER_SECRET,
         @Body request: BulkLocation
     ) : Response<WeatherBulkApiResponse>
+
+    @GET("/v1/forecast.json")
+    suspend fun getSevenDayWeatherForecast(
+        @Query("q") location: String,
+        @Query("days") days: Int = 9,
+        @Query("key") key: String = BuildConfig.WEATHER_SECRET
+    ): Response<SevenDayWeatherResponse>
 }

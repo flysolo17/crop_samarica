@@ -9,6 +9,7 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.Announcement
 import androidx.compose.material.icons.filled.Announcement
+import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
@@ -28,14 +29,16 @@ import com.jmballangca.cropsamarica.ui.theme.CropSamaricaTheme
 @Composable
 fun AnnouncementCard(
     modifier: Modifier = Modifier,
-    announcement: Announcement,
+    announcement: Announcement?,
 ) {
-    OutlinedCard(
+
+    Card(
         modifier = modifier
             .fillMaxWidth(),
         shape = RoundedCornerShape(16.dp),
         colors = CardDefaults.outlinedCardColors(
-            containerColor = MaterialTheme.colorScheme.surface
+            containerColor = MaterialTheme.colorScheme.primary,
+            contentColor = MaterialTheme.colorScheme.onPrimary
         ),
         elevation = CardDefaults.outlinedCardElevation(defaultElevation = 2.dp)
     ) {
@@ -50,29 +53,31 @@ fun AnnouncementCard(
             ) {
                 Text(
                     modifier = Modifier.weight(1f),
-                    text = announcement.title,
+                    text = announcement?.title ?: "No Title",
                     maxLines = 1,
                     overflow = androidx.compose.ui.text.style.TextOverflow.Ellipsis,
-                    style = MaterialTheme.typography.titleMedium,
+                    style = MaterialTheme.typography.titleSmall,
                     fontWeight = FontWeight.SemiBold,
-                    color = MaterialTheme.colorScheme.onSurface
+                    color = MaterialTheme.colorScheme.onPrimary
                 )
 
-                UrgencyBadge(urgency = announcement.urgency)
+                UrgencyBadge(urgency = announcement?.urgency ?: "Low")
             }
 
             // Message
             Text(
-                text = announcement.message,
-                style = MaterialTheme.typography.bodyMedium,
-                color = MaterialTheme.colorScheme.onSurfaceVariant
+                text = announcement?.message ?: "",
+                style = MaterialTheme.typography.labelSmall.copy(
+                    fontWeight = FontWeight.SemiBold
+                ),
+                color = MaterialTheme.colorScheme.onPrimary
             )
 
             // Date (bottom right)
             Text(
-                text = announcement.date.ifBlank { "Today" },
+                text = announcement?.date ?: "Today",
                 style = MaterialTheme.typography.labelSmall,
-                color = MaterialTheme.colorScheme.outline,
+                color = MaterialTheme.colorScheme.onPrimary,
                 modifier = Modifier.align(Alignment.End)
             )
         }

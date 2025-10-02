@@ -1,14 +1,18 @@
 package com.jmballangca.cropsamarica.presentation.home.components
 import android.R
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.wrapContentSize
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.ArrowForwardIos
 import androidx.compose.material.icons.filled.MoreVert
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
@@ -20,6 +24,7 @@ import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
+import androidx.compose.material3.VerticalDivider
 import androidx.compose.material3.contentColorFor
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
@@ -29,6 +34,8 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextDecoration
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -40,8 +47,11 @@ import com.jmballangca.cropsamarica.data.models.task.Task
 import com.jmballangca.cropsamarica.data.models.task.TaskStatus
 import com.jmballangca.cropsamarica.data.models.task.getBackgroundColor
 import com.jmballangca.cropsamarica.data.models.task.getTextColor
+import com.jmballangca.cropsamarica.domain.utils.monthAndDay
+import com.jmballangca.cropsamarica.domain.utils.toDateOnly
 import com.jmballangca.cropsamarica.presentation.toCamelCase
 import com.jmballangca.cropsamarica.ui.theme.CropSamaricaTheme
+import java.util.Date
 
 
 @Composable
@@ -201,64 +211,100 @@ fun TaskCard(
     enableBorder : Boolean = true,
     onClick: () -> Unit = {}
 ) {
-
-    var expanded by remember { mutableStateOf(false) }
+    val isDone = task.status == TaskStatus.COMPLETED
     Card(
         modifier = modifier,
+        colors = CardDefaults.cardColors(
+            containerColor = MaterialTheme.colorScheme.background,
+            contentColor = MaterialTheme.colorScheme.onBackground
+        ),
         onClick = {
-            expanded = !expanded
+            onClick()
         }
     ) {
-        Row(
+        Column(
             modifier = Modifier
                 .fillMaxWidth()
                 .padding(
-                    16.dp
+                    vertical = 24.dp,
                 )
         ) {
-            Column(
+            Row(
                 modifier = Modifier
-                    .fillMaxWidth()
-                    .weight(1f),
+                    .fillMaxWidth(),
+                horizontalArrangement = Arrangement.spacedBy(20.dp),
+                verticalAlignment = androidx.compose.ui.Alignment.CenterVertically
             ) {
-                Card(
-                    shape = MaterialTheme.shapes.extraLarge,
-                    colors = CardDefaults.cardColors(
-                        containerColor = task.status.getBackgroundColor(),
-                        contentColor = task.status.getTextColor()
-                    )
-                ) {
-                    Text(
-                        text = task.status.title,
-                        modifier = Modifier.padding(vertical = 4.dp, horizontal = 16.dp),
-                        style = MaterialTheme.typography.labelSmall.copy(
-                            fontSize = 8.sp,
+                VerticalDivider(
+                    thickness = 4.dp,
+                    modifier = Modifier.height(24.dp),
+                    color = task.status.getTextColor()
+                )
 
-                            )
+
+                Text(
+                    text = task.title,
+                    style = MaterialTheme.typography.titleMedium.copy(
+                        fontWeight = FontWeight.Bold,
+                        textDecoration = if (isDone) TextDecoration.LineThrough else TextDecoration.None
+                    )
+                )
+            }
+            Column(
+                modifier = Modifier.fillMaxWidth().padding(
+                    horizontal = 24.dp
+                ),
+            ) {
+                val date = task.getStartAndDue()
+
+                date?.let {
+                    Text(
+                        modifier = Modifier.background(
+                            color =task.getBackgroundColor(),
+                            shape = MaterialTheme.shapes.small
+                        ).padding(
+                            4.dp
+                        ),
+                        text = it,
+                        style = MaterialTheme.typography.labelSmall.copy(
+                            color= task.getTextColor()
+                        ),
+                        maxLines = 2,
+                        overflow = TextOverflow.Ellipsis,
                     )
                 }
-                Text(text = task.title, style = MaterialTheme.typography.titleMedium)
-                Text(text = task.description, style = MaterialTheme.typography.bodyMedium.copy(color = MaterialTheme.colorScheme.outline),
-                    maxLines = if (expanded) Int.MAX_VALUE else 2,
-                    overflow = TextOverflow.Ellipsis
-                )
-            }
-            IconButton(
-                onClick = {
-                    onClick()
+                if (task.description.isNotEmpty()) {
+                    Spacer(
+                        modifier = Modifier.height(8.dp)
+                    )
+                    Text(
+                        text = task.description,
+                        style = MaterialTheme.typography.bodyMedium.copy(
+                            color = Color.Gray,
+                            textDecoration = if (isDone) TextDecoration.LineThrough else TextDecoration.None
+                        )
+                    )
                 }
-            ) {
-                Icon(
-                    imageVector = Icons.Default.MoreVert,
-                    contentDescription = "Task Status",
-                )
             }
+
 
         }
     }
 
 }
+fun Task?.getStartAndDue(): String? {
+    if (this == null) return null
 
+    val start = this.startDate?.monthAndDay()
+    val due = this.dueDate?.monthAndDay()
+    return when {
+        start == null && due == null -> null
+        start == due -> start
+        start == null -> due
+        due == null -> start
+        else -> "$start - $due"
+    }
+}
 @Preview
 @Composable
 private fun TaskCardPrev() {
@@ -267,7 +313,11 @@ private fun TaskCardPrev() {
             task = Task(
                 id = "1",
                 title = "Task 1",
-                description = "Task 1 description"
+                description = "Task 1 description",
+
+                startDate = Date(),
+                dueDate = Date(),
+                status = TaskStatus.PENDING
             )
         )
     }

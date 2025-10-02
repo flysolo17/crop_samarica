@@ -3,6 +3,7 @@ package com.jmballangca.cropsamarica
 import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.jmballangca.cropsamarica.data.models.pest.PestAndDisease
 import com.jmballangca.cropsamarica.data.models.user.User
 import com.jmballangca.cropsamarica.data.models.weather.BulkLocation
 import com.jmballangca.cropsamarica.data.models.weather.LocationName
@@ -11,6 +12,7 @@ import com.jmballangca.cropsamarica.data.models.weather.WeatherApiResponse
 import com.jmballangca.cropsamarica.data.service.WeatherApiService
 import com.jmballangca.cropsamarica.domain.repository.AuthRepository
 import com.jmballangca.cropsamarica.domain.repository.ForecastRepository
+import com.jmballangca.cropsamarica.domain.repository.PestAndDiseasesRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
 
@@ -31,15 +33,16 @@ data class MainState(
 class MainViewModel @Inject constructor(
     private val forecastRepository: ForecastRepository,
     private val authRepository: AuthRepository,
-    private val weatherApiService: WeatherApiService
+    private val weatherApiService: WeatherApiService,
+    private val pestAndDiseasesRepository: PestAndDiseasesRepository
 ) : ViewModel() {
 
     private val _state = MutableStateFlow(MainState())
     val state = _state.asStateFlow()
-
     init {
         getUser()
     }
+
 
     private fun getUser() {
         viewModelScope.launch(
@@ -55,23 +58,5 @@ class MainViewModel @Inject constructor(
         }
     }
 
-
-    fun getWeather(location : String = "San Manuel Pangasinan") {
-        viewModelScope.launch {
-            val response = weatherApiService.getBulk(
-                request = BulkLocation(
-                    locations = listOf(
-                        LocationName("Binalonan, Pangasinan"),
-                        LocationName("San Manuel, Pangasinan")
-                    )
-                )
-            )
-            if (response.isSuccessful) {
-                Log.d("MainViewModel", "getWeather: ${response.body()}")
-            } else {
-                Log.d("MainViewModel", "getWeather: ${response.errorBody()}")
-            }
-        }
-    }
-
 }
+

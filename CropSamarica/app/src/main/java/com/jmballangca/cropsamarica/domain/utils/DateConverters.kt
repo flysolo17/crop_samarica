@@ -8,9 +8,17 @@ import java.util.Locale
 import java.util.TimeZone
 
 
+fun Date.monthAndDay() : String {
+    return try {
+        val outputFormat = SimpleDateFormat("MMM dd", Locale.getDefault())
+        outputFormat.format(this)
+    } catch (e: Exception) {
+        this.toString()
+    }
+}
+
 fun String.toDateOnly(): String {
     return try {
-        // Input format from WeatherAPI
         val inputFormat = SimpleDateFormat("yyyy-MM-dd HH:mm", Locale.getDefault())
         val outputFormat = SimpleDateFormat("yyyy-MM-dd", Locale.getDefault())
         val date = inputFormat.parse(this)
@@ -20,6 +28,16 @@ fun String.toDateOnly(): String {
     }
 }
 
+fun String.toDay() : String {
+    return try {
+        val inputFormat = SimpleDateFormat("yyyy-MM-dd", Locale.getDefault())
+        val outputFormat = SimpleDateFormat("EEE", Locale.getDefault())
+        val date = inputFormat.parse(this)
+        date?.let { outputFormat.format(it) } ?: this
+    } catch (e: Exception) {
+        "invalid"
+    }
+}
 
 fun Long.toYmdPht(): String {
     return SimpleDateFormat("yyyy-MM-dd").apply { timeZone = TimeZone.getTimeZone("Asia/Manila") }.format(Date(this))

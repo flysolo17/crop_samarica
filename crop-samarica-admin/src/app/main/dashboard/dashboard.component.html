@@ -1,0 +1,74 @@
+<div class="dashboard-container">
+  <h1>Dashboard</h1>
+  <div class="summary-grid">
+    <mat-card class="summary-card">
+      <h3>Total Users</h3>
+      <p>{{ users$?.length || 0 }}</p>
+    </mat-card>
+
+    <mat-card class="summary-card">
+      <h3>Total Crop Fields</h3>
+      <p>{{ crops$?.length || 0 }}</p>
+    </mat-card>
+
+    <mat-card class="summary-card">
+      <h3>Active Crops</h3>
+      <p>{{ activeCrops }}</p>
+    </mat-card>
+
+    <mat-card class="summary-card">
+      <h3>Harvest Ready</h3>
+      <p>{{ harvested }}</p>
+    </mat-card>
+  </div>
+
+  <!-- Middle Grid: Chart + Info -->
+  <div class="info-grid">
+    <mat-card class="chart-card">
+      <h3>Crops by Stage</h3>
+      <canvas
+        baseChart
+        [data]="{
+          labels: cropsByStageLabels,
+          datasets: [{ data: cropsByStageData }]
+        }"
+        [type]="'pie'"
+      >
+      </canvas>
+    </mat-card>
+
+    <mat-card class="list-card">
+      <h3>Recent Crop Fields</h3>
+      <div *ngIf="crops$?.length; else noCrops">
+        <div *ngFor="let crop of crops$ | slice : 0 : 5" class="crop-item">
+          <div class="crop-info">
+            <h4>{{ crop.name }}</h4>
+            <p class="location">{{ crop.location }}</p>
+          </div>
+          <div class="crop-meta">
+            <span class="stage">{{ crop.stage }}</span>
+          </div>
+        </div>
+      </div>
+      <ng-template #noCrops>
+        <p class="empty">No crops available.</p>
+      </ng-template>
+    </mat-card>
+  </div>
+
+  <!-- Bottom Section -->
+  <div class="bottom-grid">
+    <mat-card class="chart-card">
+      <h3>Area Size by Variety</h3>
+      <div class="chart-container">
+        <canvas
+          baseChart
+          [data]="cropsGrowthChart"
+          [options]="chartOptions"
+          [type]="'bar'"
+        >
+        </canvas>
+      </div>
+    </mat-card>
+  </div>
+</div>

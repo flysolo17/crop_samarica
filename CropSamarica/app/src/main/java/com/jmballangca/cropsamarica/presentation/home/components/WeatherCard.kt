@@ -33,7 +33,8 @@ import java.util.Locale
 @Composable
 fun WeatherCard(
     modifier: Modifier = Modifier,
-    weather: DailyForecast
+    weather: DailyForecast ?,
+    onClick: () -> Unit = {}
 ) {
     Card(
         modifier = modifier,
@@ -41,8 +42,10 @@ fun WeatherCard(
         colors = CardDefaults.cardColors(
             containerColor = MaterialTheme.colorScheme.tertiary,
             contentColor = MaterialTheme.colorScheme.onTertiary
-        )
+        ),
+        onClick = onClick
     ) {
+
         Column(
             modifier = Modifier.fillMaxWidth().padding(16.dp)
         ) {
@@ -51,7 +54,7 @@ fun WeatherCard(
                 verticalAlignment = androidx.compose.ui.Alignment.CenterVertically
             ) {
                 Text(
-                    text = weather.location,
+                    text = weather?.location ?: "No Location",
                     style = MaterialTheme.typography.titleSmall.copy(
                         fontWeight = FontWeight.Bold
                     )
@@ -61,16 +64,21 @@ fun WeatherCard(
                     contentDescription = "Location"
                 )
             }
+            val hourNow = SimpleDateFormat("HH aa", Locale.getDefault()).format(System.currentTimeMillis())
+            val currentTemp = weather?.hourly?.find {
+                it.time.toProperTime() == hourNow
+            }?.temp ?: weather?.currentTemp ?: "0 C"
+
             Text(
-                text = weather.currentTemp,
+                text = currentTemp,
                 style = MaterialTheme.typography.displayLarge
             )
             Text(
-                text = weather.condition.text,
+                text = weather?.condition?.text ?: "No Condition",
                 style = MaterialTheme.typography.titleSmall
             )
             Text(
-                text = "${weather.highLow} ${weather.feelsLike}",
+                text = "${weather?.highLow} ${weather?.feelsLike}",
                 style = MaterialTheme.typography.bodyMedium
             )
             Row(
@@ -81,7 +89,7 @@ fun WeatherCard(
                     .horizontalScroll(rememberScrollState()),
                 horizontalArrangement = Arrangement.spacedBy(12.dp)
             ) {
-                weather.hourly.forEach {
+                weather?.hourly?.forEach {
                     Column(
                         horizontalAlignment = androidx.compose.ui.Alignment.CenterHorizontally,
                         verticalArrangement = Arrangement.Center
@@ -124,3 +132,9 @@ private fun WeatherCardPrev() {
     }
 }
 
+//should return  "14:9:7"
+fun toHours()  {
+    val totalSeconds = System.currentTimeMillis() / 1000
+    val hour = totalSeconds / 3600
+
+}

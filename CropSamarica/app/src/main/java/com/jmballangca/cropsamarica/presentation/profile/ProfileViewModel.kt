@@ -44,8 +44,6 @@ class ProfileViewModel @Inject constructor(
                 viewModelScope.launch {
                     authRepository.logout().onSuccess {
                         _oneTimeEvents.trySend(Navigate(AUTH))
-                        delay(1000)
-                        _oneTimeEvents.trySend(Navigate(ONBOARDING))
                     }
                 }
             }

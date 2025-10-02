@@ -1,0 +1,56 @@
+.developers-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 24px;
+  padding: 24px;
+}
+
+.developer-card {
+  text-align: center;
+  padding: 20px;
+  border-radius: 16px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+
+  &:hover {
+    transform: translateY(-6px);
+    box-shadow: 0 6px 18px rgba(0, 0, 0, 0.15);
+  }
+
+  .profile {
+    display: flex;
+    justify-content: center;
+    margin-bottom: 16px;
+
+    img {
+      width: 120px;
+      height: 120px;
+      border-radius: 50%;
+      object-fit: cover;
+      border: 3px solid #1976d2; // Material primary
+    }
+  }
+
+  .name {
+    font-size: 1.3rem;
+    font-weight: 600;
+    margin: 0;
+  }
+
+  .email {
+    font-size: 0.95rem;
+    color: #666;
+    margin: 4px 0;
+  }
+
+  .roles {
+    font-size: 0.9rem;
+    font-weight: 500;
+    color: #444;
+    margin-top: 8px;
+    max-width: 100%;
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+  }
+}

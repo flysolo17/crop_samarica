@@ -1,0 +1,15 @@
+<h2 mat-dialog-title>Edit Profile</h2>
+
+<mat-dialog-content>
+  <form class="edit-form">
+    <mat-form-field appearance="outline" class="w-100">
+      <mat-label>Name</mat-label>
+      <input matInput [formControl]="name" placeholder="Enter your name" />
+    </mat-form-field>
+  </form>
+</mat-dialog-content>
+
+<mat-dialog-actions align="end">
+  <button mat-button mat-dialog-close>Cancel</button>
+  <button mat-raised-button color="primary" (click)="save()">Save</button>
+</mat-dialog-actions>

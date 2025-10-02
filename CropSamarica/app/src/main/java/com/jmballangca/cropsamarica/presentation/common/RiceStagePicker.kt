@@ -1,20 +1,15 @@
 package com.jmballangca.cropsamarica.presentation.common
 
-import androidx.compose.foundation.background
 import androidx.compose.foundation.gestures.awaitEachGesture
 import androidx.compose.foundation.gestures.awaitFirstDown
 import androidx.compose.foundation.gestures.waitForUpOrCancellation
-import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.offset
-import androidx.compose.foundation.layout.padding
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.DateRange
 import androidx.compose.material3.DatePicker
 import androidx.compose.material3.DatePickerDialog
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
-import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.SelectableDates
@@ -28,20 +23,17 @@ import androidx.compose.runtime.mutableLongStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
-import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.input.pointer.PointerEventPass
 import androidx.compose.ui.input.pointer.pointerInput
-import androidx.compose.ui.unit.dp
-import androidx.compose.ui.window.Popup
-import com.jmballangca.cropsamarica.data.models.rice_field.getRiceStage
-import com.jmballangca.cropsamarica.domain.utils.toDateOnly
 import java.text.SimpleDateFormat
 import java.util.Date
 import java.util.Locale
 
-fun Long.convertMillisToDate(): String {
+fun Long?.convertMillisToDate(): String {
+    if (this == 0L || this == null) {
+        return ""
+    }
     val formatter = SimpleDateFormat("MM/dd/yyyy", Locale.getDefault())
     return formatter.format(Date(this))
 }
@@ -96,35 +88,41 @@ fun RiceStagePicker(
                 onSelected(selectedDate.toDate())
                 showModal = false
             },
-            onDismiss = { showModal = false }
+            onDismiss = { showModal = false },
         )
     }
 
 }
 
 
+
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun DatePickerModal(
     onDateSelected: (Long?) -> Unit,
-    onDismiss: () -> Unit
+    onDismiss: () -> Unit,
+    minDate: Date? = null
 ) {
     val millisInDay = 24 * 60 * 60 * 1000L
-    val earliestAllowed = System.currentTimeMillis() - (130L * millisInDay)
+
+    // If minDate is provided, disable dates before (minDate - 1 day), else default to 130 days ago
+    val earliestAllowed = minDate?.time?.minus(millisInDay)
+        ?: (System.currentTimeMillis() - (130L * millisInDay))
 
     val selectableDates = object : SelectableDates {
         override fun isSelectableDate(utcTimeMillis: Long): Boolean {
             return utcTimeMillis >= earliestAllowed
         }
+
         override fun isSelectableYear(year: Int): Boolean {
             return true
         }
     }
 
     val datePickerState = rememberDatePickerState(
-        selectableDates = selectableDates
+        selectableDates = selectableDates,
+        initialSelectedDateMillis = minDate?.time ?: System.currentTimeMillis()
     )
-
 
     DatePickerDialog(
         onDismissRequest = onDismiss,
