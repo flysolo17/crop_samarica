@@ -48,8 +48,10 @@ import com.jmballangca.cropsamarica.presentation.navigation.AUTH
 
 import com.jmballangca.cropsamarica.presentation.navigation.MAIN
 import com.jmballangca.cropsamarica.presentation.navigation.ONBOARDING
+import com.jmballangca.cropsamarica.presentation.navigation.SURVEY
 
 import com.jmballangca.cropsamarica.presentation.onboarding.OnboardingScreen
+import com.jmballangca.cropsamarica.presentation.survey.SurveyScreen
 
 
 import com.jmballangca.cropsamarica.ui.theme.CropSamaricaTheme
@@ -212,6 +214,13 @@ fun Main(
         composable<MAIN> {
             MainScreen(
                 primaryNavController = navController,
+            )
+        }
+        composable<SURVEY> { backStackEntry ->
+            val survey = backStackEntry.toRoute<SURVEY>()
+            SurveyScreen(
+                id = survey.id,
+                navHostController = navController
             )
         }
     }

@@ -35,6 +35,7 @@ fun MainNavGraph(
     riceFields: List<RiceField>,
     onExpand: () -> Unit,
     notifications: List<Notifications>,
+
 ) {
     NavHost(
         navController = navController,
@@ -78,13 +79,6 @@ fun MainNavGraph(
         }
 
 
-        composable<SURVEY> { backStackEntry ->
-            val survey = backStackEntry.toRoute<SURVEY>()
-            SurveyScreen(
-                id = survey.id,
-                navHostController = navController
-            )
-        }
         composable<PEST_AND_DISEASES_DETAIL> {
             val id = it.toRoute<PEST_AND_DISEASES_DETAIL>()
             PestAndDiseaseDetailScreen(
@@ -113,7 +107,15 @@ fun MainNavGraph(
         composable<PROFILE> {
             ProfileScreen(
                 primaryNavController = navController,
-                navController = navController
+                navController = navController,
+                onLogout = {
+                    primaryNavController.navigate(ONBOARDING) {
+                        launchSingleTop = true
+                        popUpTo(navController.graph.startDestinationId) {
+                            saveState = true
+                        }
+                    }
+                }
             )
         }
 

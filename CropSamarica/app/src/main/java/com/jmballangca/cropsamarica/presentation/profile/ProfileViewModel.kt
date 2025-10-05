@@ -43,7 +43,7 @@ class ProfileViewModel @Inject constructor(
             ProfileEvents.OnLogout -> {
                 viewModelScope.launch {
                     authRepository.logout().onSuccess {
-                        _oneTimeEvents.trySend(Navigate(AUTH))
+                        _oneTimeEvents.trySend(ShowToast("Logout Successful"))
                     }
                 }
             }

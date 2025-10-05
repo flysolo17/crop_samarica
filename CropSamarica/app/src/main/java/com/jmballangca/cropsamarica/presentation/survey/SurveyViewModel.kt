@@ -67,6 +67,7 @@ class SurveyViewModel  @Inject constructor(
                     isLoading = false,
                     recommendationResult = it
                 )
+                Log.d("SurveyViewModel", "submit: $it")
             }.onFailure {
                 _state.value = _state.value.copy(
                     isLoading = false

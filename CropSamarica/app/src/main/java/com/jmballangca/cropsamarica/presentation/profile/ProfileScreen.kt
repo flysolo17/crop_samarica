@@ -77,7 +77,8 @@ fun ProfileScreen(
     modifier: Modifier = Modifier,
     primaryNavController: NavController,
     navController: NavController,
-    viewModel: ProfileViewModel = hiltViewModel()
+    viewModel: ProfileViewModel = hiltViewModel(),
+    onLogout: () -> Unit = {}
 ) {
 
     val state by viewModel.state.collectAsStateWithLifecycle()
@@ -88,20 +89,15 @@ fun ProfileScreen(
         oneTimeEvents.collect {
             when (it) {
                 is OneTimeEvents.Navigate -> {
-                    if (it.route == AUTH) {
-                        primaryNavController.navigate(it.route) {
-                            popUpTo(navController.graph.id) {
-                                inclusive = true
-                            }
-                        }
-                    } else {
-                        navController.navigate(it.route)
-                    }
+
                 }
                 OneTimeEvents.NavigateBack -> {
                     navController.popBackStack()
                 }
                 is OneTimeEvents.ShowToast -> {
+                    if (it.message == "Logout Successful") {
+                        onLogout()
+                    }
                     context.showToast(it.message)
                 }
             }

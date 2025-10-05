@@ -78,10 +78,10 @@ fun SurveyScreen(
             }
         }
     }
-    val reccomendations = state.recommendationResult
-    if (reccomendations != null) {
+    val recommendations  = state.recommendationResult
+    if (recommendations != null) {
         RecommendationDialog(
-            recommendations = reccomendations,
+            recommendations = recommendations,
             onDismiss = {
                 navHostController.popBackStack()
             },

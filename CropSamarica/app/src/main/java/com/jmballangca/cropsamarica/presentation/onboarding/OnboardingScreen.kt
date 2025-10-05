@@ -246,7 +246,7 @@ fun WelcomePage(
             modifier = Modifier.size(200.dp)
         )
         Text(
-            "Welcome to Crop Samarica AI",
+            "Your Digital Kaagapay sa Palayan",
             style = MaterialTheme.typography.headlineLarge.copy(
                 color = MaterialTheme.colorScheme.primary,
                 fontWeight = FontWeight.Black,
@@ -257,7 +257,7 @@ fun WelcomePage(
         Spacer(
             modifier = Modifier.size(16.dp)
         )
-        Text("Monitor your rice crops with precision using AI-powered technology. Track growth stages, optimize yields, and make smarter farming decisions.",
+        Text("Monitor your rice crops with precision. Track growth stages, optimize yields, and make smarter farming decisions.",
             style = MaterialTheme.typography.bodySmall.copy(
                 color = MaterialTheme.colorScheme.onBackground,
                 textAlign = TextAlign.Center
@@ -287,7 +287,7 @@ fun WelcomePage(
 @Composable
 fun AiAssistantPage(modifier: Modifier = Modifier,
 onBack: () -> Unit,
-                    onNext : () -> Unit
+onNext : () -> Unit
 ) {
     Column(
         modifier = modifier
@@ -297,13 +297,13 @@ onBack: () -> Unit,
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
         Image(
-            painter = painterResource(R.drawable.aya),
+            painter = painterResource(R.drawable.task_management),
             contentDescription = "Logo",
             modifier = Modifier.size(200.dp)
         )
 
         Text(
-            "Meet our AI Assistant Aya",
+            "Plan and Track Your Farm Tasks",
             style = MaterialTheme.typography.headlineLarge.copy(
                 color = MaterialTheme.colorScheme.primary,
                 fontWeight = FontWeight.Black,
@@ -314,7 +314,7 @@ onBack: () -> Unit,
         Spacer(
             modifier = Modifier.size(16.dp)
         )
-        Text("Our intelligent assistant analyzes your rice fields in real-time, providing insights on growth stages, pest detection, and harvest timing. Get personalized recommendations 24/7.",
+        Text("Stay organized by scheduling watering, fertilizing, and pest control tasks. Get reminders and monitor your farm’s daily activities efficiently.",
             style = MaterialTheme.typography.bodySmall.copy(
                 color = MaterialTheme.colorScheme.onBackground,
                 textAlign = TextAlign.Center)

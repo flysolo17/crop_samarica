@@ -74,6 +74,7 @@ import com.jmballangca.cropsamarica.data.models.weather.SevenDayWeatherResponse
 import com.jmballangca.cropsamarica.domain.repository.SevenDayWeatherForecast
 import com.jmballangca.cropsamarica.domain.utils.toDateOnly
 import com.jmballangca.cropsamarica.domain.utils.toDay
+import com.jmballangca.cropsamarica.presentation.common.LoadingScreen
 import com.jmballangca.cropsamarica.presentation.create_crop_field.components.RiceVariety
 import com.jmballangca.cropsamarica.presentation.create_crop_field.components.SoilTypes
 import com.jmballangca.cropsamarica.presentation.home.components.WeatherCard
@@ -113,21 +114,39 @@ fun WeatherForecastScreen(
             )
         }
     }
-    WeatherForecastScreen(
-        modifier = modifier,
-        isLoading = state.isLoading,
-        reminders = state.reminders,
-        isGeneratingReminder = state.isGeneratingReminder,
-        weatherForecast = state.weatherForecast,
-        aiReminders = state.aiReminders,
-        onNotify = {
-            events(WeatherForecastEvents.OnNotify(it))
-        },
-        error = state.error,
-        onBackClick = {
-            primaryNavController.popBackStack()
+    when  {
+        state.isGeneratingReminder || state.isLoading -> {
+            LoadingScreen(
+                title = "Aya is analyzing the data might take a moment..."
+            )
         }
-    )
+        state.error != null -> {
+            UnknownError(
+                message = state.error.toString(),
+                onBack = {
+                    primaryNavController.popBackStack()
+                }
+            )
+        }
+        else -> {
+            WeatherForecastScreen(
+                modifier = modifier,
+                isLoading = state.isLoading,
+                reminders = state.reminders,
+                isGeneratingReminder = state.isGeneratingReminder,
+                weatherForecast = state.weatherForecast,
+                aiReminders = state.aiReminders,
+                onNotify = {
+                    events(WeatherForecastEvents.OnNotify(it))
+                },
+                error = state.error,
+                onBackClick = {
+                    primaryNavController.popBackStack()
+                }
+            )
+        }
+    }
+
 }
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -324,10 +343,11 @@ fun ReminderCard(
     isNotified : Boolean = true,
     onNotify: () -> Unit = {}
 ) {
+    val dateFormatter = remember { SimpleDateFormat("MMM dd", Locale.getDefault()) }
+    val dayFormatter = remember { SimpleDateFormat("EEEE", Locale.getDefault()) }
 
-    val reminderDate = reminder.reminderDate
-    val date = SimpleDateFormat("MMM dd", Locale.getDefault()).format(reminderDate)
-    val month = SimpleDateFormat("EEEE", Locale.getDefault()).format(reminderDate)
+    val date = dateFormatter.format(reminder.reminderDate)
+    val day = dayFormatter.format(reminder.reminderDate)
     OutlinedCard(
         modifier = modifier.fillMaxWidth(),
     ) {
@@ -343,7 +363,7 @@ fun ReminderCard(
 
             ) {
                 Text("${date}", style = MaterialTheme.typography.titleMedium)
-                Text("${month}", style = MaterialTheme.typography.bodySmall)
+                Text("${day}", style = MaterialTheme.typography.bodySmall)
             }
             Text(
                 text = reminder.message,

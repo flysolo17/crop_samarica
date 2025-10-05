@@ -51,6 +51,7 @@ import com.jmballangca.cropsamarica.domain.models.NotificationStatus
 import com.jmballangca.cropsamarica.domain.models.Notifications
 import com.jmballangca.cropsamarica.presentation.home.components.HomeReminderCard
 import com.jmballangca.cropsamarica.presentation.home.components.NextStageCard
+import com.jmballangca.cropsamarica.presentation.home.components.NoRiceFieldContent
 import com.jmballangca.cropsamarica.presentation.home.components.NoTaskFound
 import com.jmballangca.cropsamarica.presentation.home.components.ProfileImage
 import com.jmballangca.cropsamarica.presentation.home.components.RiceFieldCard
@@ -109,6 +110,7 @@ fun HomeScreen(
             events(HomeEvents.GetRiceField(it))
         }
     }
+
     HomeScreen(
         modifier = modifier,
         user = user,
@@ -121,7 +123,7 @@ fun HomeScreen(
             navController.navigate(VIEW_CROP_FIELD(it))
         },
         onNextStage = {
-            navController.navigate(SURVEY(
+            primaryNavController.navigate(SURVEY(
                 id = it
             ))
         },
@@ -134,6 +136,7 @@ fun HomeScreen(
             navController.navigate(NOTIFICATIONS)
         },
         notifications = notification,
+        onCreateCropField = onCreateCropField
     )
 }
 
@@ -152,145 +155,153 @@ fun HomeScreen(
     onViewWeatherForecast : (String) -> Unit,
     navigateToNotification: () -> Unit,
     notifications : List<Notifications>,
+    onCreateCropField: () -> Unit
 ) {
     val field = riceField?.riceField
     val weather = riceField?.weather
-    LazyColumn(
-        modifier = modifier.fillMaxSize(),
-        contentPadding = PaddingValues(16.dp),
-        verticalArrangement = Arrangement.spacedBy(16.dp)
-    ) {
-        item {
-            Row(
-                verticalAlignment = androidx.compose.ui.Alignment.CenterVertically,
-                horizontalArrangement = Arrangement.SpaceBetween,
-                modifier = Modifier.fillMaxWidth()
-            ) {
-                SelectedRiceFieldCard(
-                    modifier = Modifier.shimmer(shimmering = isLoading),
-                    selectedRiceField = field,
-                ) {
-                    onExpand()
-                }
-
+    if (!isLoading && field == null) {
+        NoRiceFieldContent {
+            onCreateCropField()
+        }
+    } else {
+        LazyColumn(
+            modifier = modifier.fillMaxSize(),
+            contentPadding = PaddingValues(16.dp),
+            verticalArrangement = Arrangement.spacedBy(16.dp)
+        ) {
+            item {
                 Row(
                     verticalAlignment = androidx.compose.ui.Alignment.CenterVertically,
-                    horizontalArrangement = Arrangement.spacedBy(8.dp)
+                    horizontalArrangement = Arrangement.SpaceBetween,
+                    modifier = Modifier.fillMaxWidth()
                 ) {
-                    val badgeCount = notifications.filter {
-                        it.status == NotificationStatus.unseen.name
-                    }.size
-                    BadgedBox(
-                        badge = {
-                            if (badgeCount > 0) {
-                                Badge {
-                                    Text(badgeCount.toString())
-                                }
-                            }
-                        }
+                    SelectedRiceFieldCard(
+                        modifier = Modifier.shimmer(shimmering = isLoading),
+                        selectedRiceField = field,
                     ) {
-                        IconButton(
-                            onClick = navigateToNotification,
-                            modifier = Modifier.shimmer(shimmering = isLoading, shape = CircleShape)
-                        ) {
-                            Icon(
-                                imageVector = Icons.Default.Notifications,
-                                contentDescription = "Notifications"
-                            )
-                        }
+                        onExpand()
                     }
 
+                    Row(
+                        verticalAlignment = androidx.compose.ui.Alignment.CenterVertically,
+                        horizontalArrangement = Arrangement.spacedBy(8.dp)
+                    ) {
+                        val badgeCount = notifications.filter {
+                            it.status == NotificationStatus.unseen.name
+                        }.size
+                        BadgedBox(
+                            badge = {
+                                if (badgeCount > 0) {
+                                    Badge {
+                                        Text(badgeCount.toString())
+                                    }
+                                }
+                            }
+                        ) {
+                            IconButton(
+                                onClick = navigateToNotification,
+                                modifier = Modifier.shimmer(shimmering = isLoading, shape = CircleShape)
+                            ) {
+                                Icon(
+                                    imageVector = Icons.Default.Notifications,
+                                    contentDescription = "Notifications"
+                                )
+                            }
+                        }
 
-                    ProfileImage(
-                        modifier = Modifier.shimmer(shimmering = isLoading, shape = CircleShape),
-                        profile = user.profile,
-                        name = user.name,
-                        imageSize = 40.dp,
-                        onClick = onProfileSelected
+
+                        ProfileImage(
+                            modifier = Modifier.shimmer(shimmering = isLoading, shape = CircleShape),
+                            profile = user.profile,
+                            name = user.name,
+                            imageSize = 40.dp,
+                            onClick = onProfileSelected
+                        )
+                    }
+                }
+            }
+            item {
+                AnnouncementCard(
+                    modifier = Modifier.shimmer(shimmering = isLoading),
+                    announcement = riceField?.announcements
+                )
+            }
+            items(reminders, key = {it.id}) {
+                HomeReminderCard(
+                    reminder = it,
+                    modifier = Modifier.shimmer(shimmering = isLoading)
+                )
+            }
+
+            item {
+                WeatherCard(
+                    modifier = Modifier.shimmer(shimmering = isLoading, shape = MaterialTheme.shapes.large),
+                    weather = riceField?.weather,
+                    onClick = {
+                        field?.id?.let {
+                            onViewWeatherForecast(it)
+                        }
+                    }
+                )
+            }
+
+            val readyForNextStage = field?.let {
+                val currentStage = Date(it.plantedDate).getRiceStage()
+                it.stage != RiceStage.MATURE && currentStage != it.stage
+            } ?: false
+
+            if (readyForNextStage) {
+                item {
+                    NextStageCard(
+                        stage = field.stage,
+                        variety = field.variety,
+                        onNextStage = {
+                            onNextStage(field.id)
+                        }
                     )
                 }
             }
-        }
-        item {
-            AnnouncementCard(
-                modifier = Modifier.shimmer(shimmering = isLoading),
-                announcement = riceField?.announcements
-            )
-        }
-        items(reminders, key = {it.id}) {
-            HomeReminderCard(
-                reminder = it,
-                modifier = Modifier.shimmer(shimmering = isLoading)
-            )
-        }
 
-        item {
-            WeatherCard(
-                modifier = Modifier.shimmer(shimmering = isLoading, shape = MaterialTheme.shapes.large),
-                weather = riceField?.weather,
-                onClick = {
-                    field?.id?.let {
-                        onViewWeatherForecast(it)
-                    }
-                }
-            )
-        }
-
-        val readyForNextStage = field?.let {
-            val currentStage = Date(it.plantedDate).getRiceStage()
-            it.stage != RiceStage.MATURE && currentStage != it.stage
-        } ?: false
-
-        if (readyForNextStage) {
             item {
-                NextStageCard(
-                    stage = field.stage,
-                    variety = field.variety,
-                    onNextStage = {
-                        onNextStage(field.id)
+                RiceFieldCard(
+                    modifier = Modifier.shimmer(shimmering = isLoading, shape = MaterialTheme.shapes.large),
+                    riceField = riceField?.riceField,
+                    onClick = {
+                        onViewCropField(field?.id.orEmpty())
                     }
                 )
             }
-        }
-
-        item {
-            RiceFieldCard(
-                modifier = Modifier.shimmer(shimmering = isLoading, shape = MaterialTheme.shapes.large),
-                riceField = riceField?.riceField,
-                onClick = {
-                    onViewCropField(field?.id.orEmpty())
-                }
-            )
-        }
-        val tasks = riceField?.tasks?.filter {
-            it.stage == field?.stage
-        } ?: emptyList()
-        item {
-            Text("Current Task",
-                modifier = Modifier.shimmer(shimmering = isLoading),
-                style = MaterialTheme.typography.titleLarge.copy(
-                    fontWeight = FontWeight.SemiBold
-                )
-            )
-        }
-        items(tasks, key = {it.id}) {
-            TaskCard(
-                task = it
-            )
-        }
-
-        if (tasks.isEmpty() && !isLoading) {
+            val tasks = riceField?.tasks?.filter {
+                it.stage == field?.stage
+            } ?: emptyList()
             item {
-                NoTaskFound(
-                    modifier = Modifier.fillMaxWidth(),
-                ){
+                Text("Current Task",
+                    modifier = Modifier.shimmer(shimmering = isLoading),
+                    style = MaterialTheme.typography.titleLarge.copy(
+                        fontWeight = FontWeight.SemiBold
+                    )
+                )
+            }
+            items(tasks, key = {it.id}) {
+                TaskCard(
+                    task = it
+                )
+            }
+
+            if (tasks.isEmpty() && !isLoading) {
+                item {
+                    NoTaskFound(
+                        modifier = Modifier.fillMaxWidth(),
+                    ){
+
+                    }
 
                 }
-
             }
-        }
 
+        }
     }
+
 }
 
 

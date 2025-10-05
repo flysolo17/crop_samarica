@@ -84,11 +84,11 @@ fun RiceFieldCard(
                     modifier = Modifier.weight(1f)
                 ) {
                     Text(
-                        text = riceField.stage.name,
+                        text = riceField.stage.displayName,
                         style = MaterialTheme.typography.titleLarge
                     )
                     Text(
-                        text = "${riceField.areaSize} ha , ${riceField.variety}",
+                        text = "${riceField.areaSize} ha , ${riceField.variety.displayName}",
                         style = MaterialTheme.typography.bodySmall,
                         color = Color.Gray
                     )
@@ -98,7 +98,7 @@ fun RiceFieldCard(
                     )
                 }
                 Image(
-                    modifier = Modifier.size(100.dp),
+                    modifier = Modifier.size(48.dp),
                     painter = painterResource(
                         id = riceField.stage.getIcon()
                     ),

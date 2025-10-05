@@ -315,10 +315,7 @@ class AyaRepositoryImpl @Inject constructor(
                     image(it)
                 }
                 text("""
-                     You are an agricultural expert specializing in rice farming in the Philippines. 
-                Based on the farmer’s rice field data and survey answers, provide 2–5 clear and actionable recommendations 
-                for the next stage of rice growth. 
-
+                  Based on the survey responses, generate a JSON object strictly following the recommendationSchema.
                 Consider:
                 - Current stage: $currentStage
                 - Next stage: $nextState
@@ -329,15 +326,6 @@ class AyaRepositoryImpl @Inject constructor(
                     1. Recommendations must be practical, actionable, and aligned with local farming practices.  
                     2. Take into account weather risks (rain, drought, pests) and crop growth stage.  
                     3. Prioritize sustainable and cost-effective methods where possible.  
-                    4. Output recommendations strictly in this format:
-                    
-                    [
-                      {
-                        "stage": "${nextState}",
-                        "title": "<Short title summarizing recommendation>",
-                        "details": "<Detailed but concise explanation of what the farmer should do and why. maximum of 2 sentences>"
-                      }
-                    ]
                 """.trimIndent())
             }
             val response = ai.generateContent(prompt)
@@ -352,6 +340,7 @@ class AyaRepositoryImpl @Inject constructor(
                 Log.d("AyaRepositoryImpl", "generateCropField: $recommendations")
 
                 Result.success(RecommendationResult(recommendations = recommendations, riceField.id))
+
             } else {
                 Result.failure(Exception("No function calls found"))
             }
@@ -390,9 +379,11 @@ class AyaRepositoryImpl @Inject constructor(
         return try {
             val prompt = content {
                 text("""
-                    Generate atleast  3 actionable reminders based on ricefield data and weather forecast for the next 
-                    3 days. here's the data:
-                     
+                    Generate at least 3 actionable reminders based on the rice field data and the weather forecast. 
+                    Each reminder must include a `reminderDate` that is between today and the next 6 days (inclusive). 
+                    Dates must always be formatted as 'yyyy-MM-dd'.
+                    Here’s the data:
+
                     RiceField Data: ${riceField},
                     Weather Forecast: ${weather}
                 """.trimIndent()

@@ -1,6 +1,7 @@
 package com.jmballangca.cropsamarica.presentation.view_crop_field
 
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -10,11 +11,13 @@ import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.WindowInsets
+import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.layout.wrapContentSize
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyRow
@@ -23,13 +26,17 @@ import androidx.compose.foundation.lazy.grid.GridItemSpan
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.foundation.lazy.grid.items
 import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material.icons.filled.ArrowBack
+import androidx.compose.material.icons.filled.CheckBox
 import androidx.compose.material.icons.filled.Delete
 import androidx.compose.material.icons.filled.Edit
+import androidx.compose.material.icons.filled.Info
+import androidx.compose.material.icons.filled.Warning
 import androidx.compose.material3.Card
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
@@ -42,6 +49,7 @@ import androidx.compose.material3.Tab
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
 import androidx.compose.material3.TopAppBarDefaults
+import androidx.compose.material3.VerticalDivider
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
@@ -54,6 +62,8 @@ import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
@@ -71,7 +81,9 @@ import com.jmballangca.cropsamarica.presentation.common.LoadingScreen
 import com.jmballangca.cropsamarica.presentation.create_crop_field.CreateCropFieldScreen
 import com.jmballangca.cropsamarica.presentation.home.components.TaskCard
 import com.jmballangca.cropsamarica.presentation.view_crop_field.components.DeleteCropDialog
+import com.jmballangca.cropsamarica.presentation.view_crop_field.components.ViewAboutInfo
 import com.jmballangca.cropsamarica.presentation.weather_forecast.ReminderCard
+import com.jmballangca.cropsamarica.ui.theme.CropSamaricaTheme
 import java.text.SimpleDateFormat
 import java.util.Date
 import java.util.Locale
@@ -145,10 +157,9 @@ fun ViewCropFieldScreen(
 
     Scaffold(
         topBar = {
-
             TopAppBar(
                 title = {
-                    Text(text = "Crop Field")
+                    Text(text = riceField.name)
                 },
                 navigationIcon = {
                     IconButton(onClick = onBack) {
@@ -159,18 +170,14 @@ fun ViewCropFieldScreen(
                     }
                 },
                 actions = {
-                    Row(
-                        verticalAlignment = Alignment.CenterVertically,
-                        horizontalArrangement = Arrangement.spacedBy(8.dp),
-                        modifier = Modifier.padding(end = 16.dp)
+                    DeleteCropDialog(
+                        name = riceField.name,
                     ) {
-                        DeleteCropDialog(
-                            name = riceField.name,
-                        ) {
-                            onDeleteCrop(riceField.id)
-                        }
+                        onDeleteCrop(riceField.id)
                     }
-
+                    ViewAboutInfo(
+                        riceField = riceField
+                    )
                 }
             )
 
@@ -193,67 +200,21 @@ fun ViewCropFieldScreen(
                 verticalArrangement = Arrangement.spacedBy(12.dp),
 
             ) {
-                item {
-                    RiceFieldDetailScreen(
-                        riceField = riceField
+                val stages = RiceStage.entries
+                itemsIndexed(
+                    items = stages,
+                    key = { _, stage -> stage.ordinal }
+                ) { index, stage ->
+                    StageItem(
+                        selected = index == selectedStage.ordinal,
+                        isLast = index == stages.size - 1,
+                        stage = stage,
+                        isCurrentStage = selectedStage == stage,
+                        onClick = {
+                            onStageSelected(stage)
+                        }
                     )
                 }
-                item {
-                    val index = stages.indexOf(selectedStage)
-                    ScrollableTabRow(
-                        selectedTabIndex = index,
-                        modifier = Modifier.fillMaxWidth(),
-                        edgePadding = 0.dp,
-
-                    ) {
-                        stages.forEachIndexed { index, stage ->
-                            val selected = index == selectedStage.ordinal
-                            Tab(
-                                selected = selected,
-                                unselectedContentColor = Color.Gray,
-                                onClick = {
-                                    onStageSelected(stage)
-                                },
-                                icon={
-                                    if (selected) {
-                                        Image(
-                                            painter = painterResource(stage.getIcon()),
-                                            contentDescription = stage.name,
-                                            modifier = Modifier.size(24.dp),
-                                            contentScale = ContentScale.Crop
-                                        )
-                                    } else {
-                                        Icon(
-                                            painter = painterResource(stage.getIcon()),
-                                            contentDescription = stage.name,
-                                            modifier = Modifier.size(24.dp),
-                                        )
-
-                                    }
-                                },
-                                text = {
-                                    Text(text = stage.name)
-                                }
-                            )
-                        }
-                    }
-                }
-
-                item {
-                    Text("Tasks", style = MaterialTheme.typography.headlineSmall)
-                }
-                val currentTask = tasks.filter { it.stage == selectedStage }
-                items(currentTask, key = { it.id }) {
-                    TaskCard(task = it)
-                }
-                val currentReminders = reminders.filter { it.stage == selectedStage }
-                item {
-                    Text("Reminders", style = MaterialTheme.typography.headlineSmall)
-                }
-                items(currentReminders, key = { it.id }) {
-                    ReminderCard(reminder = it)
-                }
-
             }
         }
 
@@ -291,7 +252,8 @@ fun RiceFieldDetailScreen(riceField: RiceField) {
 
     Column(
         modifier = Modifier
-            .fillMaxWidth(),
+            .fillMaxWidth()
+            .padding(16.dp),
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.Bottom
     ) {
@@ -325,5 +287,143 @@ fun DetailItem(
         Text(text = label, style = MaterialTheme.typography.labelSmall, color = Color.Gray)
         Text(text = value, style = MaterialTheme.typography.bodyMedium)
     }
+}
 
+@Composable
+fun StageItem(
+    modifier: Modifier = Modifier,
+    selected: Boolean = false,
+    isLast : Boolean = false,
+    isCurrentStage :Boolean = false,
+    stage: RiceStage,
+    onClick: () -> Unit = {}
+) {
+    Row(
+        modifier = modifier
+            .fillMaxWidth()
+            .height(
+                if (!selected) 100.dp else Dp.Unspecified
+            )
+    ) {
+        Column(
+            horizontalAlignment = Alignment.CenterHorizontally,
+        ) {
+            if (isCurrentStage) {
+                Image(
+                    painter = painterResource(stage.getIcon()),
+                    contentDescription = stage.name,
+                    modifier = Modifier.size(48.dp).clickable {
+                        onClick()
+                    },
+                    contentScale = ContentScale.Crop
+                )
+            } else {
+                Icon(
+                    painter = painterResource(stage.getIcon()),
+                    contentDescription = stage.name,
+                    modifier = Modifier.size(48.dp).clickable {
+                        onClick()
+                    },
+                )
+            }
+            if (!isLast) {
+                VerticalDivider(
+                    modifier = Modifier.fillMaxHeight(),
+                    color = if (isCurrentStage) MaterialTheme.colorScheme.primary else Color.Gray
+                )
+            }
+        }
+        Column(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(8.dp),
+            verticalArrangement = Arrangement.spacedBy(8.dp)
+        ) {
+            Text(
+                text = stage.displayName,
+                style = MaterialTheme.typography.titleLarge.copy(
+                    color = if (isCurrentStage) MaterialTheme.colorScheme.primary else Color.Unspecified
+                ),
+            )
+            Text("${stage.daysRange.first} - ${stage.daysRange.last} days", style = MaterialTheme.typography.bodySmall)
+            if (selected) {
+                Text(
+                    text = stage.description,
+                    style = MaterialTheme.typography.bodyMedium.copy(
+                        color = Color.Gray,
+                    ),
+                )
+                Row(
+                    verticalAlignment = Alignment.CenterVertically,
+                    horizontalArrangement = Arrangement.spacedBy(8.dp)
+                ){
+                    Icon(
+                        imageVector = Icons.Default.CheckBox,
+                        contentDescription = "Check",
+                        tint = MaterialTheme.colorScheme.primary,
+                        modifier = Modifier.size(24.dp)
+                    )
+                    Text("Things you should do", style = MaterialTheme.typography.titleSmall)
+                }
+                stage.thingsToDo.forEach {
+                    Text(
+                        text = "- $it",
+                        style = MaterialTheme.typography.bodySmall.copy(
+                            color = Color.Gray
+                        ),
+                        modifier = Modifier.padding(start = 16.dp)
+                    )
+                }
+                Row(
+                    verticalAlignment = Alignment.CenterVertically,
+                    horizontalArrangement = Arrangement.spacedBy(8.dp)
+                ){
+                    Icon(
+                        imageVector = Icons.Default.Warning,
+                        contentDescription = "Check",
+                        tint = MaterialTheme.colorScheme.error,
+                        modifier = Modifier.size(24.dp)
+                    )
+                    Text("Things to look out for", style = MaterialTheme.typography.titleSmall)
+                }
+                stage.thingsToLookOutFor.forEach {
+                    Text(
+                        text = "- $it",
+                        style = MaterialTheme.typography.bodySmall.copy(
+                            color = Color.Gray
+                            ),
+                        modifier = Modifier.padding(start = 16.dp)
+                    )
+                }
+            }
+
+
+        }
+    }
+
+}
+
+@Preview(
+    showBackground = true
+)
+@Composable
+private fun StageItemPrev() {
+    CropSamaricaTheme {
+        Column(
+            modifier = Modifier.fillMaxSize(),
+            horizontalAlignment = Alignment.CenterHorizontally,
+            verticalArrangement = Arrangement.Center
+        ) {
+            val stages = RiceStage.entries
+            stages.forEachIndexed { index, stage ->
+                StageItem(
+                    selected = index == 2,
+                    isLast = index == stages.size - 1,
+                    stage = stage,
+                    isCurrentStage = index == 2
+                )
+            }
+        }
+
+    }
 }

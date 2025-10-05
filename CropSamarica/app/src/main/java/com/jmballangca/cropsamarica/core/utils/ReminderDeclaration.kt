@@ -9,6 +9,7 @@ import androidx.compose.ui.graphics.vector.ImageVector
 import com.google.firebase.ai.type.FunctionDeclaration
 import com.google.firebase.ai.type.Schema
 import com.jmballangca.cropsamarica.data.models.rice_field.RiceStage
+import com.jmballangca.cropsamarica.presentation.weather_forecast.toFormattedDate
 import kotlinx.serialization.json.JsonElement
 import kotlinx.serialization.json.JsonObject
 import kotlinx.serialization.json.contentOrNull
@@ -80,10 +81,12 @@ val CREATE_REMINDER = FunctionDeclaration(
                                 "condition" to Schema.string("The condition indicating suitability for application at this hour. Must be one of 'OPTIMAL', 'UNFAVORABLE', or 'MODERATE'.")
                             )
                         ),
-                        minItems = 16, // From 6 AM (6:00) to 9 PM (21:00) inclusive = (21 - 6) + 1 = 16 hours.
-                        maxItems = 16  // Enforce exactly 16 hourly entries.
+                        minItems = 16,
+                        maxItems = 16
                     ),
-                    "reminderDate" to Schema.string("The date for the reminder it should return date based on the weather forecast, formatted as a string (e.g., 'YYYY-MM-DD').")
+                    "reminderDate" to Schema.string(
+                        "The date of the reminder. Must always be between today and the next 6 days inclusive, based on the weather forecast. Format must be 'yyyy-MM-dd'."
+                    )
                 )
             )
         )
@@ -94,11 +97,7 @@ val CREATE_REMINDER = FunctionDeclaration(
 fun JsonObject.asReminder(): Reminder {
     // Define the date format expected from the AI.
     // Using Locale.US is generally safer for machine-generated strings to avoid locale issues.
-    val dateFormat = SimpleDateFormat("yyyy-MM-DD", Locale.US) // Changed Locale.CHINA to Locale.US for consistency
-
-    // Safely extract primitive string values.
-    // We use ?.jsonPrimitive?.contentOrNull to handle cases where the key might be missing
-    // or not a primitive type, and then throw an exception if a critical field is absent.
+    val dateFormat = SimpleDateFormat("yyyy-MM-dd", Locale("en","PH")) // Changed Locale.CHINA to Locale.US for consistency
     val id = this["id"]?.jsonPrimitive?.contentOrNull
         ?: throw IllegalArgumentException("Reminder 'id' is missing or not a valid string.")
     val riceFieldId = this["riceFieldId"]?.jsonPrimitive?.contentOrNull
@@ -128,13 +127,7 @@ fun JsonObject.asReminder(): Reminder {
     val reminderDateString = this["reminderDate"]?.jsonPrimitive?.contentOrNull
         ?: throw IllegalArgumentException("Reminder 'reminderDate' is missing or not a valid string.")
 
-    val reminderDate = try {
-        // dateFormat.parse returns a Date? (nullable Date)
-        dateFormat.parse(reminderDateString)
-            ?: throw IllegalArgumentException("Could not parse reminderDate from string: '$reminderDateString'")
-    } catch (e: java.text.ParseException) {
-        throw IllegalArgumentException("Invalid date format for reminderDate: '$reminderDateString'. Expected YYYY-MM-DD.", e)
-    }
+    val reminderDate = dateFormat.parse(reminderDateString)
 
     return Reminder(
         id = id,
