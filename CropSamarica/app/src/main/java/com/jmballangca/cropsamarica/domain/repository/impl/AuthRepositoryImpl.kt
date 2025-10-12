@@ -13,12 +13,14 @@ import com.google.android.libraries.identity.googleid.GoogleIdTokenCredential.Co
 import com.google.firebase.auth.EmailAuthProvider
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseAuthException
+import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.auth.GoogleAuthProvider
 import com.google.firebase.firestore.FirebaseFirestore
 import com.jmballangca.cropsamarica.R
 import com.jmballangca.cropsamarica.core.utils.UIState
 import com.jmballangca.cropsamarica.data.models.user.User
 import com.jmballangca.cropsamarica.domain.repository.AuthRepository
+import com.jmballangca.cropsamarica.domain.repository.UserWithVerifiedStatus
 import kotlinx.coroutines.channels.awaitClose
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.Flow
@@ -80,7 +82,7 @@ class AuthRepositoryImpl @Inject constructor(
         }
     }
 
-    override suspend fun getUser(): Result<User?> {
+    override suspend fun getUser(): Result<UserWithVerifiedStatus?> {
         return try {
             val uid = auth.currentUser?.uid
             if (uid == null) {
@@ -89,7 +91,7 @@ class AuthRepositoryImpl @Inject constructor(
             val result = _userRef.document(uid!!).get().await()
             val user = result.toObject(User::class.java)
             delay(1000)
-            Result.success(user)
+            Result.success(UserWithVerifiedStatus(user!!, auth.currentUser!!.isEmailVerified))
         } catch (e: Exception) {
             Result.failure(e)
         }
@@ -230,6 +232,33 @@ class AuthRepositoryImpl @Inject constructor(
             result(UIState.Error(e.message ?: "Something went wrong"))
         }
     }
+
+    override suspend fun sendEmailVerification(): Result<String> {
+        return try {
+            val user = auth.currentUser ?: return Result.failure(Exception("User not logged in"))
+            user.sendEmailVerification().await()
+            delay(1000)
+            Result.success("Verification email sent successfully")
+        } catch (e: Exception) {
+            Result.failure(e)
+        }
+    }
+
+    override suspend  fun checkUserVerified(): Result<Boolean> {
+        return try {
+            val currentUser = auth.currentUser
+            if (currentUser != null) {
+                currentUser.reload().await()
+                val isVerified = currentUser.isEmailVerified
+                Result.success(isVerified)
+            } else {
+                Result.failure(Exception("No authenticated user found."))
+            }
+        } catch (e: Exception) {
+            Result.failure(e)
+        }
+    }
+
 
     private suspend fun getCredential(
         filterByAuthorizedAccounts: Boolean = false

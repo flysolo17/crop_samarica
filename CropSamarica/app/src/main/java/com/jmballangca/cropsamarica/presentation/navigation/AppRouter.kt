@@ -9,6 +9,9 @@ object CREATE_CROP_FIELD
 @Serializable
 object AUTH
 
+@Serializable
+object VERIFICATION
+
 
 @Serializable
 object MAIN
@@ -36,7 +39,8 @@ data object PEST_AND_DISEASES
 
 @Serializable
 data class PEST_AND_DISEASES_DETAIL(
-    val id : String
+    val id : String,
+    val language : String
 )
 
 
@@ -45,6 +49,7 @@ data object DEVELOPERS
 
 @Serializable
 data object USER_GUIDE
+
 
 
 @Serializable

@@ -11,6 +11,7 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import com.jmballangca.cropsamarica.R
 import com.jmballangca.cropsamarica.core.anim.BouncingArrow
@@ -33,7 +34,7 @@ fun NoTaskFound(
             )
         )
         Text(
-            text = "No Task Found",
+            text = stringResource(R.string.no_task_found),
             modifier = Modifier.padding(16.dp)
         )
 

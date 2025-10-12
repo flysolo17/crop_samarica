@@ -1,6 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="app_name">Crop Samarica</string>
-    <string name="hello_world">Hello World!</string>
+    <string name="hello_world">Namaste</string>
     <string name="skip">Skip</string>
     <string name="manage">Manage your Rice Field anywhere in the world.</string>
     <string name="welcome_title">Your Digital Kaagapay sa Palayan</string>
@@ -26,17 +27,17 @@
     <string name="title">Title</string>
     <string name="description">Description</string>
     <string name="save_changes">Save Changes</string>
-    <string name="edit">Edit</string>
     <string name="next_stage">Next Stage</string>
     <string name="your_crop_is_ready_for_next_stage">Your crop is ready for next stage</string>
-    <string name="no_rice_fields_found">No Rice Fields Found</string>
+    <string name="no_rice_fields_found">Walang pang pananim</string>
     <string name="create_a_new_rice_field_to_get_started">Create a new rice field to get started</string>
     <string name="create">Create</string>
     <string name="no_field_selected">No field selected</string>
     <string name="delete">Delete</string>
-    <string name="home">Home</string>
-    <string name="pest_and_diseases">Pest And Diseases</string>
-    <string name="task">Task</string>
+    <string name="home">Bahay</string>
+    <string name="pest_and_diseases">Peste at mga sakit</string>
+    <string name="task">Trabaho</string>
+    <string name="edit">Edit</string>
     <string name="getting_user_info">Getting user info...</string>
     <string name="no_user_found">No user found</string>
     <string name="user_menu">USER MENU</string>
@@ -45,4 +46,6 @@
     <string name="developers">Developers</string>
     <string name="logout">Logout</string>
     <string name="settings">Settings</string>
+
+
 </resources>

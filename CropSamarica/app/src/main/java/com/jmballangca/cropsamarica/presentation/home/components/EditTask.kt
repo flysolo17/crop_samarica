@@ -24,7 +24,9 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
+import com.jmballangca.cropsamarica.R
 import com.jmballangca.cropsamarica.core.utils.UIState
 import com.jmballangca.cropsamarica.core.utils.showToast
 import com.jmballangca.cropsamarica.data.models.task.Task
@@ -52,11 +54,13 @@ fun EditTask(
             sheetState = rememberModalBottomSheetState()
         ) {
             Column(
-                modifier = Modifier.fillMaxWidth().padding(16.dp),
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(16.dp),
                 verticalArrangement = Arrangement.spacedBy(8.dp),
                 horizontalAlignment = Alignment.CenterHorizontally
             ) {
-                Text(text = "Edit Task",style = MaterialTheme.typography.titleMedium)
+                Text(text = stringResource(R.string.edit_task),style = MaterialTheme.typography.titleMedium)
                 Spacer(
                     modifier = Modifier.padding(8.dp)
                 )
@@ -68,14 +72,14 @@ fun EditTask(
                     isError = title.isEmpty(),
                     supportingText = {
                         if (title.isEmpty()) {
-                            Text(text = "Title is required")
+                            Text(text = stringResource(R.string.title_is_required))
                         }
                     },
                     onValueChange = {
                         title = it
                     },
                     label = {
-                        Text("Title")
+                        Text(stringResource(R.string.title))
                     }
                 )
                 OutlinedTextField(
@@ -87,7 +91,7 @@ fun EditTask(
                         description = it
                     },
                     label = {
-                        Text("Description")
+                        Text(stringResource(R.string.description))
                     }
                 )
 
@@ -131,7 +135,7 @@ fun EditTask(
                                 modifier = Modifier.size(24.dp)
                             )
                         } else {
-                            Text("Save Changes")
+                            Text(stringResource(R.string.save_changes))
                         }
                     }
 
@@ -152,6 +156,6 @@ fun EditTask(
             contentColor = MaterialTheme.colorScheme.onPrimary
         )
     ) {
-        Text("Edit")
+        Text(stringResource(R.string.edit))
     }
 }

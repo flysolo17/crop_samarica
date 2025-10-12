@@ -1,6 +1,8 @@
 package com.jmballangca.cropsamarica.core.di
 
 import android.content.Context
+import android.content.res.Configuration
+import android.os.LocaleList
 import androidx.credentials.CredentialManager
 import androidx.room.Room
 
@@ -27,6 +29,7 @@ import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
+import java.util.Locale
 import javax.inject.Singleton
 
 
@@ -63,6 +66,7 @@ object AppModules {
     fun provideContext(
         @ApplicationContext context: Context
     ) = context
+
 
     @Provides
     @Singleton

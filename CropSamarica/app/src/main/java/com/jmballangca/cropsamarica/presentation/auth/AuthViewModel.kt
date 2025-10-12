@@ -5,6 +5,7 @@ import androidx.lifecycle.viewModelScope
 import com.jmballangca.cropsamarica.core.utils.OneTimeEvents
 import com.jmballangca.cropsamarica.domain.repository.AuthRepository
 import com.jmballangca.cropsamarica.presentation.navigation.MAIN
+import com.jmballangca.cropsamarica.presentation.navigation.VERIFICATION
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.channels.Channel
@@ -50,7 +51,7 @@ class AuthViewModel @Inject constructor(
                     isRegistering = false,
                 )
                 _oneTimeEvents.send(OneTimeEvents.ShowToast(it))
-                _oneTimeEvents.send(OneTimeEvents.Navigate(MAIN))
+                _oneTimeEvents.send(OneTimeEvents.Navigate(VERIFICATION))
             }.onFailure {
                 _state.value = state.value.copy(
                     isRegistering = false,
@@ -106,7 +107,7 @@ class AuthViewModel @Inject constructor(
                     isRegistering = false,
                 )
                 _oneTimeEvents.send(OneTimeEvents.ShowToast(it))
-                _oneTimeEvents.send(OneTimeEvents.Navigate(MAIN))
+                _oneTimeEvents.send(OneTimeEvents.Navigate(VERIFICATION))
             }.onFailure {
                 _state.value = state.value.copy(
                     isRegistering = false,

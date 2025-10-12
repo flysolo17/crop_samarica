@@ -33,6 +33,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
@@ -68,7 +69,7 @@ fun OnboardingScreen(
                         onClick = onSkip,
                         shape = MaterialTheme.shapes.small
                     ) {
-                        Text("Skip")
+                        Text(stringResource(R.string.skip))
                     }
                 }
             )
@@ -166,7 +167,7 @@ fun CropManagement(
             modifier = Modifier.size(200.dp)
         )
         Text(
-            "Manage your Rice Field anywhere in the world.",
+            text = stringResource(R.string.manage),
             style = MaterialTheme.typography.headlineLarge.copy(
                 color = MaterialTheme.colorScheme.primary,
                 fontWeight = FontWeight.Black,
@@ -246,7 +247,7 @@ fun WelcomePage(
             modifier = Modifier.size(200.dp)
         )
         Text(
-            "Your Digital Kaagapay sa Palayan",
+            stringResource(R.string.welcome_title),
             style = MaterialTheme.typography.headlineLarge.copy(
                 color = MaterialTheme.colorScheme.primary,
                 fontWeight = FontWeight.Black,
@@ -257,7 +258,8 @@ fun WelcomePage(
         Spacer(
             modifier = Modifier.size(16.dp)
         )
-        Text("Monitor your rice crops with precision. Track growth stages, optimize yields, and make smarter farming decisions.",
+        Text(
+            stringResource(R.string.welcome_description),
             style = MaterialTheme.typography.bodySmall.copy(
                 color = MaterialTheme.colorScheme.onBackground,
                 textAlign = TextAlign.Center
@@ -271,7 +273,7 @@ fun WelcomePage(
             onClick = start,
             shape = MaterialTheme.shapes.small
         ) {
-            Text("Get Started")
+            Text(stringResource(R.string.get_started))
             Spacer(
                 modifier = Modifier.size(8.dp)
             )
@@ -303,7 +305,7 @@ onNext : () -> Unit
         )
 
         Text(
-            "Plan and Track Your Farm Tasks",
+            stringResource(R.string.plan_title),
             style = MaterialTheme.typography.headlineLarge.copy(
                 color = MaterialTheme.colorScheme.primary,
                 fontWeight = FontWeight.Black,
@@ -314,7 +316,8 @@ onNext : () -> Unit
         Spacer(
             modifier = Modifier.size(16.dp)
         )
-        Text("Stay organized by scheduling watering, fertilizing, and pest control tasks. Get reminders and monitor your farm’s daily activities efficiently.",
+        Text(
+            stringResource(R.string.plan_description),
             style = MaterialTheme.typography.bodySmall.copy(
                 color = MaterialTheme.colorScheme.onBackground,
                 textAlign = TextAlign.Center)
@@ -338,13 +341,13 @@ onNext : () -> Unit
                 Spacer(
                     modifier = Modifier.size(8.dp)
                 )
-                Text("Back")
+                Text(stringResource(R.string.back))
             }
             Button(
                 onClick = onNext,
                 shape = MaterialTheme.shapes.small
             ) {
-                Text("Next")
+                Text(stringResource(R.string.next))
                 Spacer(
                     modifier = Modifier.size(8.dp)
                 )

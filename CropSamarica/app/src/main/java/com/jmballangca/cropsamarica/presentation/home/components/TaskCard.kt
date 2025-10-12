@@ -34,6 +34,7 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextDecoration
 import androidx.compose.ui.text.style.TextOverflow
@@ -77,7 +78,9 @@ fun TaskDialog(
                 shape = MaterialTheme.shapes.large,
             ) {
                 Column(
-                    modifier = Modifier.fillMaxWidth().padding(16.dp)
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(16.dp)
                 ) {
                     Row(
                         modifier = Modifier.fillMaxWidth()
@@ -176,7 +179,7 @@ fun TaskDialog(
                                 contentColor = MaterialTheme.colorScheme.onError
                             )
                         ) {
-                            Text("Delete")
+                            Text(stringResource(com.jmballangca.cropsamarica.R.string.delete))
                         }
 
                         EditTask(
@@ -251,20 +254,24 @@ fun TaskCard(
                 )
             }
             Column(
-                modifier = Modifier.fillMaxWidth().padding(
-                    horizontal = 24.dp
-                ),
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(
+                        horizontal = 24.dp
+                    ),
             ) {
                 val date = task.getStartAndDue()
 
                 date?.let {
                     Text(
-                        modifier = Modifier.background(
-                            color =task.getBackgroundColor(),
-                            shape = MaterialTheme.shapes.small
-                        ).padding(
-                            4.dp
-                        ),
+                        modifier = Modifier
+                            .background(
+                                color = task.getBackgroundColor(),
+                                shape = MaterialTheme.shapes.small
+                            )
+                            .padding(
+                                4.dp
+                            ),
                         text = it,
                         style = MaterialTheme.typography.labelSmall.copy(
                             color= task.getTextColor()

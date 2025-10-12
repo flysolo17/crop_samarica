@@ -35,6 +35,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -235,11 +236,11 @@ fun MainScreen(
                                     icon = {
                                         Icon(
                                             imageVector = if (item.route == currentRoute?.route) item.selectedIcon else item.unselectedIcon,
-                                            contentDescription = item.label
+                                            contentDescription = stringResource(id = item.label)
                                         )
                                     },
                                     label = {
-                                        Text(item.label , style = MaterialTheme.typography.labelSmall,maxLines = 1,overflow = TextOverflow.Ellipsis)
+                                        Text(stringResource(id = item.label) , style = MaterialTheme.typography.labelSmall,maxLines = 1,overflow = TextOverflow.Ellipsis)
                                     }
                                 )
                             }

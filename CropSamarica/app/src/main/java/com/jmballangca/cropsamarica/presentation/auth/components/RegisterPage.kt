@@ -32,6 +32,7 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardType
@@ -39,6 +40,7 @@ import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import com.jmballangca.cropsamarica.R
 import com.jmballangca.cropsamarica.ui.theme.CropSamaricaTheme
 
 @Composable
@@ -78,7 +80,7 @@ fun RegisterPage(
             onValueChange = {
                 registerForm.set("name", it)
             },
-            placeholder = { Text("Name") },
+            placeholder = { Text(stringResource(R.string.name)) },
             keyboardOptions = KeyboardOptions(
                 imeAction = ImeAction.Next,
                 keyboardType = KeyboardType.Text
@@ -113,7 +115,7 @@ fun RegisterPage(
             onValueChange = {
                 registerForm.set("email", it)
             },
-            placeholder = { Text("Email") },
+            placeholder = { Text(stringResource(R.string.email)) },
             keyboardOptions = KeyboardOptions(
                 imeAction = ImeAction.Next,
                 keyboardType = KeyboardType.Email
@@ -146,7 +148,7 @@ fun RegisterPage(
             onValueChange = {
                 registerForm.set("password", it)
             },
-            placeholder = { Text("Password") },
+            placeholder = { Text(stringResource(R.string.password)) },
             leadingIcon = {
                 Icon(
                     imageVector = Icons.Default.Lock,
@@ -188,7 +190,7 @@ fun RegisterPage(
             ),
             value = confirmPassword?.value.orEmpty(),
             onValueChange = { registerForm.set("confirmPassword", it) },
-            placeholder = { Text("Confirm Password") },
+            placeholder = { Text(stringResource(R.string.confirm_password)) },
             leadingIcon = {
                 Icon(
                     imageVector = Icons.Default.Lock,
@@ -246,7 +248,7 @@ fun RegisterPage(
                     )
                 } else {
                     Text(
-                        "Register", style = MaterialTheme.typography.titleMedium.copy(
+                        stringResource(R.string.register), style = MaterialTheme.typography.titleMedium.copy(
                             fontWeight = FontWeight.SemiBold
                         )
                     )
@@ -263,7 +265,7 @@ fun RegisterPage(
                 modifier = Modifier.padding(vertical = 8.dp)
             ) {
                 Text(
-                    "Continue with Google", style = MaterialTheme.typography.titleMedium.copy(
+                    stringResource(R.string.continue_with_google), style = MaterialTheme.typography.titleMedium.copy(
                         fontWeight = FontWeight.SemiBold
                     )
                 )

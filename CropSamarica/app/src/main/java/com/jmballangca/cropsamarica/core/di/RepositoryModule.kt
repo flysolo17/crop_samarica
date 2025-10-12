@@ -1,5 +1,7 @@
 package com.jmballangca.cropsamarica.core.di
 
+import com.jmballangca.cropsamarica.core.common.LocaleManager
+import com.jmballangca.cropsamarica.core.common.LocaleManagerImpl
 import com.jmballangca.cropsamarica.domain.repository.AuthRepository
 import com.jmballangca.cropsamarica.domain.repository.impl.AuthRepositoryImpl
 import com.jmballangca.cropsamarica.domain.repository.AyaRepository
@@ -63,4 +65,9 @@ abstract class RepositoryModule {
     abstract fun bindCommonRepository(
         impl: CommonRepositoryImpl
     ): CommonRepository
+
+    @Binds
+    abstract fun LocaleManager(
+        impl: LocaleManagerImpl
+    ) : LocaleManager
 }

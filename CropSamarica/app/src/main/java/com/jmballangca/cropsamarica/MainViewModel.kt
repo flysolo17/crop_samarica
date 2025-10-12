@@ -13,6 +13,7 @@ import com.jmballangca.cropsamarica.data.service.WeatherApiService
 import com.jmballangca.cropsamarica.domain.repository.AuthRepository
 import com.jmballangca.cropsamarica.domain.repository.ForecastRepository
 import com.jmballangca.cropsamarica.domain.repository.PestAndDiseasesRepository
+import com.jmballangca.cropsamarica.domain.repository.UserWithVerifiedStatus
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
 
@@ -27,21 +28,22 @@ import javax.inject.Inject
 data class MainState(
     val isLoading: Boolean = false,
     val hasUser: Boolean = false,
-    val user: User? = null
+    val user: UserWithVerifiedStatus? = null
 )
 @HiltViewModel
 class MainViewModel @Inject constructor(
-    private val forecastRepository: ForecastRepository,
     private val authRepository: AuthRepository,
-    private val weatherApiService: WeatherApiService,
-    private val pestAndDiseasesRepository: PestAndDiseasesRepository
+
 ) : ViewModel() {
 
     private val _state = MutableStateFlow(MainState())
     val state = _state.asStateFlow()
     init {
         getUser()
+
     }
+
+
 
 
     private fun getUser() {

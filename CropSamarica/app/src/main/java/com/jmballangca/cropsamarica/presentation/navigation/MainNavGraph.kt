@@ -18,6 +18,7 @@ import com.jmballangca.cropsamarica.presentation.notifications.view.ViewNotifica
 import com.jmballangca.cropsamarica.presentation.pest.details.PestAndDiseaseDetailScreen
 import com.jmballangca.cropsamarica.presentation.pest.pest_and_diseases.PestAndDiseasesScreen
 import com.jmballangca.cropsamarica.presentation.profile.ProfileScreen
+import com.jmballangca.cropsamarica.presentation.settings.SettingsScreen
 
 import com.jmballangca.cropsamarica.presentation.survey.SurveyScreen
 import com.jmballangca.cropsamarica.presentation.task.TaskScreen
@@ -80,9 +81,10 @@ fun MainNavGraph(
 
 
         composable<PEST_AND_DISEASES_DETAIL> {
-            val id = it.toRoute<PEST_AND_DISEASES_DETAIL>()
+            val data = it.toRoute<PEST_AND_DISEASES_DETAIL>()
             PestAndDiseaseDetailScreen(
-                id = id.id,
+                id = data.id,
+                language = data.language,
                 navController = navController,
             )
         }
@@ -139,6 +141,12 @@ fun MainNavGraph(
             val id = it.toRoute<VIEW_NOTIFICATION>()
             ViewNotificationScreen(
                 id = id.id,
+                navController = navController
+            )
+        }
+
+        composable<SETTINGS> {
+            SettingsScreen(
                 navController = navController
             )
         }

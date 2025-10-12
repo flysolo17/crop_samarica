@@ -22,6 +22,7 @@ import androidx.compose.material.icons.filled.Book
 import androidx.compose.material.icons.filled.Code
 import androidx.compose.material.icons.filled.Edit
 import androidx.compose.material.icons.filled.Password
+import androidx.compose.material.icons.filled.Settings
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.ExperimentalMaterial3Api
@@ -48,6 +49,7 @@ import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.imageResource
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -66,6 +68,7 @@ import androidx.core.graphics.scale
 import coil.compose.AsyncImage
 import com.jmballangca.cropsamarica.presentation.navigation.AUTH
 import com.jmballangca.cropsamarica.presentation.navigation.DEVELOPERS
+import com.jmballangca.cropsamarica.presentation.navigation.SETTINGS
 import com.jmballangca.cropsamarica.presentation.navigation.USER_GUIDE
 import com.jmballangca.cropsamarica.presentation.profile.components.ChangePassword
 import com.jmballangca.cropsamarica.presentation.profile.components.EditProfile
@@ -106,7 +109,7 @@ fun ProfileScreen(
     when {
         state.isLoading -> {
             LoadingScreen(
-                title = "Getting user info..."
+                title = stringResource(R.string.getting_user_info)
             )
         }
         !state.isLoading && state.user != null -> {
@@ -128,7 +131,7 @@ fun ProfileScreen(
                 onBack = {
                     navController.popBackStack()
                 },
-                message = "No user found"
+                message = stringResource(R.string.no_user_found)
             )
         }
 
@@ -217,14 +220,14 @@ fun ProfileScreen(
                     Spacer(modifier = Modifier.height(12.dp))
                     Text(
                         text = user.name.uppercase(),
-                        style = androidx.compose.material3.MaterialTheme.typography.titleLarge.copy(
+                        style = MaterialTheme.typography.titleLarge.copy(
                             color = Color.White,
                             fontWeight = FontWeight.Bold
                         )
                     )
                     Text(
                         text = user.email,
-                        style = androidx.compose.material3.MaterialTheme.typography.labelSmall.copy(
+                        style = MaterialTheme.typography.labelSmall.copy(
                             color = Color.White.copy(
                                 alpha = 0.7f
                             )
@@ -248,7 +251,7 @@ fun ProfileScreen(
                     .weight(1f)
             )
             Text(
-                text = "USER MENU",
+                text = stringResource(R.string.user_menu),
                 style = MaterialTheme.typography.titleSmall.copy(
                     color = MaterialTheme.colorScheme.outline
                 ),
@@ -265,7 +268,7 @@ fun ProfileScreen(
                 events(ProfileEvents.OnChangePassword(currentPassword, newPassword, result))
             }
             Text(
-                text = "OTHERS",
+                text = stringResource(R.string.others),
                 style = MaterialTheme.typography.titleSmall.copy(
                     color = MaterialTheme.colorScheme.outline
                 ),
@@ -273,20 +276,26 @@ fun ProfileScreen(
             )
             ProfileButtons(
                 icon = Icons.Filled.Book,
-                title = "User Guide",
+                title = stringResource(R.string.user_guide),
                 onClick = {
                     navController.navigate(USER_GUIDE)
                 }
             )
             ProfileButtons(
                 icon = Icons.Filled.Code,
-                title = "Developers",
+                title = stringResource(R.string.developers),
                 onClick = {
                     navController.navigate(DEVELOPERS)
                 }
             )
 
-
+            ProfileButtons(
+                icon = Icons.Filled.Settings,
+                title = stringResource(R.string.settings),
+                onClick = {
+                    navController.navigate(SETTINGS)
+                }
+            )
             Button(
                 onClick = onLogout,
                 shape = MaterialTheme.shapes.medium,
@@ -296,7 +305,7 @@ fun ProfileScreen(
                     contentColor = MaterialTheme.colorScheme.onError
                 )
             ) {
-                Text(text = "Logout", modifier = Modifier.padding(8.dp))
+                Text(text = stringResource(R.string.logout), modifier = Modifier.padding(8.dp))
             }
             Text("Crop Samarica 2025", style = MaterialTheme.typography.labelSmall.copy(
                 color = MaterialTheme.colorScheme.outline
@@ -319,7 +328,9 @@ fun ProfileButtons(
         modifier = Modifier.fillMaxWidth()
     ) {
         Row(
-            modifier = Modifier.fillMaxWidth().padding(8.dp),
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(8.dp),
             verticalAlignment = Alignment.CenterVertically
         ) {
             Icon(

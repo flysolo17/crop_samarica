@@ -30,6 +30,7 @@ import androidx.compose.runtime.rememberUpdatedState
 
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
@@ -160,7 +161,46 @@ fun HomeScreen(
     val field = riceField?.riceField
     val weather = riceField?.weather
     if (!isLoading && field == null) {
-        NoRiceFieldContent {
+        NoRiceFieldContent(
+            content = {
+                Row(
+                    verticalAlignment = androidx.compose.ui.Alignment.CenterVertically,
+                    horizontalArrangement = Arrangement.spacedBy(8.dp)
+                ) {
+                    val badgeCount = notifications.filter {
+                        it.status == NotificationStatus.unseen.name
+                    }.size
+                    BadgedBox(
+                        badge = {
+                            if (badgeCount > 0) {
+                                Badge {
+                                    Text(badgeCount.toString())
+                                }
+                            }
+                        }
+                    ) {
+                        IconButton(
+                            onClick = navigateToNotification,
+                            modifier = Modifier.shimmer(shimmering = isLoading, shape = CircleShape)
+                        ) {
+                            Icon(
+                                imageVector = Icons.Default.Notifications,
+                                contentDescription = "Notifications"
+                            )
+                        }
+                    }
+
+
+                    ProfileImage(
+                        modifier = Modifier.shimmer(shimmering = isLoading, shape = CircleShape),
+                        profile = user.profile,
+                        name = user.name,
+                        imageSize = 40.dp,
+                        onClick = onProfileSelected
+                    )
+                }
+            }
+        ) {
             onCreateCropField()
         }
     } else {
@@ -275,7 +315,8 @@ fun HomeScreen(
                 it.stage == field?.stage
             } ?: emptyList()
             item {
-                Text("Current Task",
+                Text(
+                    stringResource(R.string.current_task),
                     modifier = Modifier.shimmer(shimmering = isLoading),
                     style = MaterialTheme.typography.titleLarge.copy(
                         fontWeight = FontWeight.SemiBold

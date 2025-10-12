@@ -35,6 +35,7 @@ import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardType
@@ -42,6 +43,7 @@ import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import com.jmballangca.cropsamarica.R
 import com.jmballangca.cropsamarica.ui.theme.CropSamaricaTheme
 
 @Composable
@@ -111,7 +113,7 @@ fun LoginPage(
             ),
             value = password,
             onValueChange = { password = it },
-            placeholder = { Text("Password") },
+            placeholder = { Text(stringResource(R.string.password)) },
             leadingIcon = {
                 Icon(
                     imageVector = Icons.Default.Lock,
@@ -164,7 +166,7 @@ fun LoginPage(
                     )
                 } else {
                     Text(
-                        "Login", style = MaterialTheme.typography.titleMedium.copy(
+                        stringResource(R.string.login), style = MaterialTheme.typography.titleMedium.copy(
                             fontWeight = FontWeight.SemiBold
                         )
                     )
@@ -183,7 +185,7 @@ fun LoginPage(
             HorizontalDivider(
                 modifier = Modifier.weight(1f),
             )
-            Text("or")
+            Text(stringResource(R.string.or))
             HorizontalDivider(
                 modifier = Modifier.weight(1f)
             )
@@ -213,7 +215,7 @@ fun LoginPage(
                     )
                 } else {
                     Text(
-                        "Sign in with Google",
+                        stringResource(R.string.sign_in_with_google),
                         style = MaterialTheme.typography.titleMedium.copy(
                             fontWeight = FontWeight.SemiBold
                         ),

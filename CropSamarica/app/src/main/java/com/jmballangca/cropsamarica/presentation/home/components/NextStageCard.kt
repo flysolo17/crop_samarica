@@ -17,9 +17,11 @@ import androidx.compose.material3.OutlinedCard
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import com.jmballangca.cropsamarica.R
 import com.jmballangca.cropsamarica.data.models.rice_field.RiceStage
 import com.jmballangca.cropsamarica.presentation.create_crop_field.components.RiceVariety
 import com.jmballangca.cropsamarica.ui.theme.CropSamaricaTheme
@@ -41,10 +43,11 @@ fun NextStageCard(
         Column(
             modifier = Modifier.weight(1f)
         ) {
-            Text("Next Stage", style = MaterialTheme.typography.titleLarge.copy(
+            Text(
+                stringResource(R.string.next_stage), style = MaterialTheme.typography.titleLarge.copy(
                 fontWeight = FontWeight.SemiBold
             ))
-            Text("Your crop is ready for next stage", style = MaterialTheme.typography.bodyMedium)
+            Text(stringResource(R.string.your_crop_is_ready_for_next_stage), style = MaterialTheme.typography.bodyMedium)
         }
         IconButton(
             onClick = onNextStage,

@@ -47,6 +47,7 @@ import com.jmballangca.cropsamarica.core.ui.UnknownError
 import com.jmballangca.cropsamarica.core.utils.shimmer
 import com.jmballangca.cropsamarica.data.models.pest.GOLDEN_APPLE_SNAIL
 import com.jmballangca.cropsamarica.data.models.pest.PestAndDisease
+import com.jmballangca.cropsamarica.data.models.pest.locale
 import com.jmballangca.cropsamarica.presentation.common.LoadingScreen
 import com.jmballangca.cropsamarica.ui.theme.CropSamaricaTheme
 
@@ -55,6 +56,7 @@ import com.jmballangca.cropsamarica.ui.theme.CropSamaricaTheme
 fun PestAndDiseaseDetailScreen(
     modifier: Modifier = Modifier,
     id: String,
+    language: String,
     navController: NavHostController,
     viewModel: PestAndDiseaseDetailViewModel = hiltViewModel()
 ) {
@@ -68,6 +70,7 @@ fun PestAndDiseaseDetailScreen(
     PestAndDiseaseDetailScreen(
         modifier = modifier,
         isLoading = state.isLoading,
+        language = language,
         pestAndDisease = state.pestAndDisease ?: GOLDEN_APPLE_SNAIL,
         onBack = {
             navController.popBackStack()
@@ -80,12 +83,15 @@ fun PestAndDiseaseDetailScreen(
 fun PestAndDiseaseDetailScreen(
     modifier: Modifier = Modifier,
     isLoading: Boolean = true,
+    language: String,
     pestAndDisease: PestAndDisease,
     onBack : () -> Unit
 ) {
     val scrollBehavior = TopAppBarDefaults.exitUntilCollapsedScrollBehavior()
-    val firstWord = pestAndDisease.title.substringBefore("–").trim()
-    val lastWord = pestAndDisease.title.substringAfter("–").trim()
+    val firstWord = pestAndDisease.title.locale(
+        language
+    ).substringBefore("–").trim()
+    val lastWord = pestAndDisease.title.locale(language).substringAfter("–").trim()
 
     Scaffold(
         modifier = modifier.fillMaxSize().nestedScroll(scrollBehavior.nestedScrollConnection),
@@ -143,7 +149,7 @@ fun PestAndDiseaseDetailScreen(
                 ),
                 )
 
-            val description = pestAndDisease.description
+            val description = pestAndDisease.description.locale(language)
             Spacer(modifier = Modifier.padding(4.dp))
             Text(
                 text = description,
@@ -229,7 +235,9 @@ fun PestAndDiseaseDetailScreen(
                 )
             ) {
                 prevetion.forEach {
-                    val title = it.title
+                    val title = it.title.locale(
+                        language
+                    )
                     val texts = it.text
                     Column {
                         Text(
@@ -267,7 +275,8 @@ private fun PestAndDiseasesDetailPrev() {
     CropSamaricaTheme {
         PestAndDiseaseDetailScreen(
             pestAndDisease = GOLDEN_APPLE_SNAIL,
-            onBack = {}
+            onBack = {},
+            language = "en"
         )
     }
 
